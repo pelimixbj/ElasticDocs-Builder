@@ -1,0 +1,183 @@
+/* =====================================================
+   Sidebar
+===================================================== */
+
+.sidebar {
+  height: 100vh;
+
+  position: sticky;
+  top: 0;
+
+  overflow-y: auto;
+
+  background: #0f172a;
+
+  color: #fff;
+
+  padding: 28px 18px;
+
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+  scrollbar-width: thin;
+
+  scrollbar-color: #475569 transparent;
+}
+
+/* Scroll */
+
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* =====================================================
+   Logo
+===================================================== */
+
+.logo {
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #22d3ee;
+
+  margin-bottom: 28px;
+}
+
+/* =====================================================
+   Tree
+===================================================== */
+
+#sidebar {
+  margin-top: 20px;
+}
+
+/* Todos los UL */
+
+#sidebar ul {
+  list-style: none;
+
+  margin: 0;
+
+  padding-left: 18px;
+
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* El primero no lleva línea */
+
+#sidebar > ul {
+  padding-left: 0;
+
+  border-left: none;
+}
+
+/* Espaciado */
+
+#sidebar li {
+  margin: 6px 0;
+}
+
+/* Links */
+
+#sidebar a {
+  display: block;
+
+  padding: 6px 10px;
+
+  text-decoration: none;
+
+  color: #cbd5e1;
+
+  border-radius: 6px;
+
+  transition: 0.2s;
+
+  line-height: 1.4;
+}
+
+/* Hover */
+
+#sidebar a:hover {
+  background: rgba(34, 211, 238, 0.1);
+
+  color: #22d3ee;
+}
+
+/* ============================
+   H1
+============================ */
+
+.toc-h1 > a {
+  font-size: 14px;
+
+  font-weight: 700;
+
+  color: #ffffff;
+
+  margin-top: 16px;
+}
+
+/* ============================
+   H2
+============================ */
+
+.toc-h2 > a {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #f1f5f9;
+}
+
+/* ============================
+   H3
+============================ */
+
+.toc-h3 > a {
+  font-size: 12px;
+
+  color: #cbd5e1;
+}
+
+/* ============================
+   H4
+============================ */
+
+.toc-h4 > a {
+  font-size: 11px;
+
+  color: #94a3b8;
+}
+
+/* =====================================================
+   Active
+===================================================== */
+
+#sidebar a.active {
+  background: rgba(34, 211, 238, 0.15);
+
+  color: #22d3ee;
+
+  font-weight: 600;
+}
+
+/* =====================================================
+   Subniveles
+===================================================== */
+
+#sidebar li ul {
+  margin-top: 6px;
+
+  margin-left: 10px;
+
+  padding-left: 18px;
+}

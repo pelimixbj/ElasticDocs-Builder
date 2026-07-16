@@ -1,0 +1,485 @@
+.elastic-card {
+  background: #fff;
+  border: 1px solid #d3dae6;
+  border-left: 5px solid #00bfb3;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 14px 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.elastic-card h2,
+.elastic-card h3 {
+  margin: 0 0 10px;
+  color: #343741;
+  font-size: 1.35rem;
+}
+
+.elastic-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.elastic-card td {
+  padding: 6px 12px;
+  border-bottom: 1px solid #ececec;
+  line-height: 1.3;
+}
+
+.elastic-card td:first-child {
+  font-weight: 600;
+  width: 170px;
+  font-size: 0.8rem;
+}
+
+/* =====================================================
+   Elastic Table
+===================================================== */
+
+.elastic-table-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 30px 0;
+  border-left: 5px solid #00bfb3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.elastic-table-card h3 {
+  margin: 0;
+  padding: 16px 22px;
+  background: #005571;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* =====================================================
+   Tables
+===================================================== */
+
+article table {
+  width: 100%;
+  margin: 1.2rem 0;
+  border-collapse: collapse;
+  table-layout: auto;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  font-size: 0.9rem;
+}
+
+article thead {
+  background: #005571;
+  color: #fff;
+}
+
+article th,
+article td {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 1.45;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+article th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+article tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+article tbody tr:hover {
+  background: #eef6ff;
+}
+
+article tbody tr:last-child td {
+  border-bottom: none;
+}
+
+article caption {
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+/* =====================================================
+   Elastic Components (Node, Topology, etc.)
+===================================================== */
+
+.elastic-card table td:first-child {
+  min-width: 170px;
+  width: 25%;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.elastic-card table td:last-child {
+  color: #111827;
+  word-break: break-word;
+}
+
+/* =====================================================
+   Headings
+===================================================== */
+
+article h1 {
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 3px solid #00bfb3;
+  color: #111827;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+article h2 {
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #dbe5ea;
+  color: #0f172a;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+article h3 {
+  margin: 1.8rem 0 0.8rem;
+  color: #005571;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+article h4 {
+  margin: 1.5rem 0 0.6rem;
+  color: #334155;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+article h5,
+article h6 {
+  margin: 1.2rem 0 0.5rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* =====================================================
+   Markdown Content
+===================================================== */
+
+article p {
+  margin: 0.6rem 0;
+  color: #374151;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  text-align: justify;
+}
+
+/* -----------------------------------------------------
+   Lists
+----------------------------------------------------- */
+
+article ul,
+article ol {
+  margin: 0.8rem 0 1rem;
+  padding-left: 1.8rem;
+}
+
+article li {
+  margin: 0.15rem 0;
+  color: #374151;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+article ul li::marker {
+  color: #00bfb3;
+}
+
+article ol li::marker {
+  color: #005571;
+  font-weight: 600;
+}
+
+/* -----------------------------------------------------
+   Links
+----------------------------------------------------- */
+
+article a {
+  color: #005571;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+article a:hover {
+  color: #00bfb3;
+  text-decoration: underline;
+}
+
+/* -----------------------------------------------------
+   Inline Code
+----------------------------------------------------- */
+
+article code {
+  padding: 2px 6px;
+  background: #f3f4f6;
+  color: #c7254e;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  font-size: 0.85em;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+pre code {
+  font-size: 0.84rem;
+}
+
+/* -----------------------------------------------------
+   Blockquotes
+----------------------------------------------------- */
+
+article blockquote {
+  margin: 1rem 0;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.92rem;
+  background: #f8fafc;
+  border-left: 4px solid #accac8;
+  border-radius: 6px;
+  color: #475569;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+article blockquote p {
+  margin: 0;
+}
+
+/* -----------------------------------------------------
+   Horizontal Rule
+----------------------------------------------------- */
+
+article hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* =====================================================
+   Images
+===================================================== */
+
+article img {
+  display: block;
+
+  max-width: 50%;
+  height: auto;
+
+  margin: 25px auto;
+
+  padding: 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+
+  cursor: zoom-in;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+article img:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.15);
+}
+
+/* -----------------------------------------------------
+   Strong / Bold
+----------------------------------------------------- */
+
+article strong {
+  color: #111827;
+  font-weight: 700;
+}
+
+/* -----------------------------------------------------
+   Italic
+----------------------------------------------------- */
+
+article em {
+  color: #475569;
+}
+
+/* -----------------------------------------------------
+   Selection
+----------------------------------------------------- */
+
+article ::selection {
+  background: #b2f5ea;
+  color: #111827;
+}
+
+/* ==========================================
+   Cover
+========================================== */
+
+.elastic-cover {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 90px;
+
+  margin: 7px 0 21px;
+  padding: 7px 21px;
+
+  background: linear-gradient(180deg, #f7fcfd 0%, #eef8fa 100%);
+  border: 1px solid #b8e5ec;
+  border-radius: 12px;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* -------------------------
+   Parte izquierda
+-------------------------- */
+
+.elastic-cover-left {
+  flex: 1;
+}
+
+.cover-label {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color: #007c91;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.elastic-cover-left h1 {
+  margin: 0;
+
+  font-size: 26px;
+
+  line-height: 1.15;
+
+  font-weight: 800;
+
+  color: #1f2937;
+}
+
+.elastic-cover-left h1::after {
+  display: none;
+}
+
+.cover-description {
+  margin-top: 12px;
+
+  max-width: 560px;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  color: #4b5563;
+}
+
+/* -------------------------
+   Panel derecho
+-------------------------- */
+
+.elastic-cover-right {
+  width: 310px;
+}
+
+.elastic-cover-right table {
+  width: 100%;
+  font-size: 12px;
+
+  border-collapse: collapse;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.elastic-cover-right tr:not(:last-child) {
+  border-bottom: 1px solid #edf2f7;
+}
+
+.elastic-cover-right th {
+  width: 95px;
+
+  padding: 10px 14px;
+
+  background: #f8fafb;
+
+  color: #4b5563;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  text-align: left;
+}
+
+.elastic-cover-right td {
+  padding: 10px 14px;
+
+  font-size: 12px;
+
+  color: #1f2937;
+}
+
+/* -------------------------
+   Estado
+-------------------------- */
+
+.cover-status {
+  display: inline-block;
+
+  padding: 4px 12px;
+
+  font-size: 11px;
+
+  border-radius: 20px;
+
+  background: #d8f5ec;
+
+  color: #067647;
+
+  border: 1px solid #9fe0ca;
+
+  font-weight: 700;
+}

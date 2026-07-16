@@ -1,0 +1,1722 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Elastic Platform</title>
+
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="highlight.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="logo">ElasticDocs</div>
+
+        <nav id="sidebar"></nav>
+      </aside>
+
+      <main class="content">
+        <!--
+        <header>
+          <h1>Elastic Platform</h1>
+          <p>Documentación Técnica</p>
+        </header>
+        -->
+
+        <article><div class="elastic-cover"><div class="elastic-cover-left"><div class="cover-label">
+ENTREGABLE FINAL DE PROYECTO
+</div><h1>SERMAS</h1><p class="cover-description">
+Documentación final de arquitectura
+</p></div><div class="elastic-cover-right"><table><tr>
+<th>CLIENTE</th>
+<td>SERMAS</td>
+</tr><tr>
+<th>CONSULTORA</th>
+<td>Inetum</td>
+</tr><tr>
+<th>ESTADO</th>
+<td>
+<span class="cover-status">Proyecto finalizado</span>
+</td>
+</tr><tr>
+<th>FECHA</th>
+<td>Junio 2026</td>
+</tr><tr>
+<th>VERSIÓN</th>
+<td>1.0</td>
+</tr></table></div></div><h1>Arquitectura de la Plataforma Elastic</h1>
+<h2>Introducción</h2>
+<p>Este documento describe la arquitectura de la plataforma Elastic instalada para SERMAS.</p>
+<div class="elastic-card"><h2>Arquitectura General</h2><table><tr>
+<td>Environment</td>
+<td>Producción</td>
+</tr><tr>
+<td>Security</td>
+<td>Habilitada</td>
+</tr><tr>
+<td>Monitoring</td>
+<td>Habilitado</td>
+</tr><tr>
+<td>Nodes</td>
+<td>16</td>
+</tr></table></div><h2>Función de cada tipo de nodo</h2>
+<div class="elastic-card"><h2>Elasticsearch Master Nodes</h2><p>
+Los nodos <strong>Master</strong> son responsables de administrar el estado del clúster Elasticsearch.
+No almacenan información de negocio ni procesan búsquedas intensivas.
+</p><h3>Responsabilidades</h3><ul>
+<li>Elegir el nodo Master activo.</li>
+<li>Mantener el estado del clúster.</li>
+<li>Crear y eliminar índices.</li>
+<li>Administrar shards y réplicas.</li>
+<li>Detectar fallos de nodos.</li>
+<li>Redistribuir shards.</li>
+<li>Gestionar cambios de configuración.</li>
+</ul><p>
+La existencia de tres nodos Master garantiza el quórum y la alta disponibilidad del clúster.
+</p></div><div class="elastic-card"><h2>Elasticsearch Data Hot</h2><p>
+Los nodos Hot almacenan la información más reciente y reciben la mayor carga de indexación.
+</p><ul>
+<li>Recibir nuevos documentos.</li>
+<li>Ejecutar búsquedas.</li>
+<li>Procesar agregaciones.</li>
+<li>Soportar cargas intensivas de escritura.</li>
+</ul></div><div class="elastic-card"><h2>Elasticsearch Data Cold</h2><p>
+Los nodos Cold almacenan información histórica consultada ocasionalmente.
+</p><ul>
+<li>Reducir costes de almacenamiento.</li>
+<li>Liberar recursos de los nodos Hot.</li>
+<li>Mantener datos históricos disponibles.</li>
+</ul></div><div class="elastic-card"><h2>Elasticsearch Data Frozen</h2><p>
+La capa Frozen utiliza Searchable Snapshots para almacenar información de muy baja utilización.
+</p><ul>
+<li>Mínimo almacenamiento local.</li>
+<li>Reducción de costes.</li>
+<li>Acceso bajo demanda.</li>
+</ul></div><div class="elastic-card"><h2>Machine Learning</h2><p>
+Los nodos ML ejecutan los procesos de inteligencia artificial de Elastic.
+</p><ul>
+<li>Detección de anomalías.</li>
+<li>Predicción de tendencias.</li>
+<li>Análisis estadístico.</li>
+<li>Procesamiento de trabajos ML.</li>
+</ul></div><div class="elastic-card"><h2>Fleet Server</h2><p>
+Fleet Server administra todos los Elastic Agents desplegados.
+</p><ul>
+<li>Registrar agentes.</li>
+<li>Distribuir políticas.</li>
+<li>Actualizar configuraciones.</li>
+<li>Administrar integraciones.</li>
+</ul></div><div class="elastic-card"><h2>Logstash</h2><p>
+Logstash procesa y transforma los datos antes de enviarlos a Elasticsearch.
+</p><ul>
+<li>Recepción de logs.</li>
+<li>Filtrado.</li>
+<li>Enriquecimiento.</li>
+<li>Transformación.</li>
+<li>Salida hacia Elasticsearch.</li>
+</ul></div><div class="elastic-card"><h2>Kibana</h2><p>
+Kibana constituye la capa de visualización y administración de la plataforma Elastic.
+</p><ul>
+<li>Dashboards.</li>
+<li>Discover.</li>
+<li>Alertas.</li>
+<li>Machine Learning.</li>
+<li>Fleet.</li>
+</ul></div><h2>Cluster</h2>
+<div class="elastic-card elastic-cluster">
+<h2>Elastic Cluster</h2><table>
+<tr>
+<td>Master</td>
+<td>3</td>
+</tr><tr>
+<td>Hot</td>
+<td>2</td>
+</tr><tr>
+<td>Warm</td>
+<td>-</td>
+</tr><tr>
+<td>Cold</td>
+<td>3</td>
+</tr><tr>
+<td>Frozen</td>
+<td>1</td>
+</tr><tr>
+<td>ML</td>
+<td>2</td>
+</tr><tr>
+<td>Kibana</td>
+<td>2</td>
+</tr><tr>
+<td>Fleet</td>
+<td>2</td>
+</tr><tr>
+<td>Logstash</td>
+<td>1</td>
+</tr></table>
+</div><h2>elasticsearch.yml</h2>
+<pre><code class="hljs language-yaml"><span class="hljs-attr">cluster.name:</span> <span class="hljs-string">sermas</span>
+<span class="hljs-attr">node.name:</span> <span class="hljs-string">elastic-master01</span>
+<span class="hljs-attr">network.host:</span> <span class="hljs-number">172.29</span><span class="hljs-number">.80</span><span class="hljs-number">.87</span>
+<span class="hljs-attr">xpack.security.enabled:</span> <span class="hljs-literal">true</span>
+</code></pre><h2>Logstash</h2>
+<pre><code class="hljs language-ruby">input {
+
+  udp {
+
+    port =&gt; <span class="hljs-number">514</span>
+
+  }
+
+}
+</code></pre><h2>API</h2>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;cluster_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;sermas&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;status&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;green&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><h2>Versiones</h2>
+<div class="elastic-card elastic-version"><h2>Installed Versions</h2><table><tr>
+<td>Elasticsearch</td>
+<td>8.11.0</td>
+</tr><tr>
+<td>Kibana</td>
+<td>8.11.0</td>
+</tr><tr>
+<td>Logstash</td>
+<td>8.19.5</td>
+</tr><tr>
+<td>Fleet Server</td>
+<td>8.11.0</td>
+</tr><tr>
+<td>Elastic Agent</td>
+<td>8.11.0</td>
+</tr></table></div><h2>Nodo Maestro</h2>
+<div class="elastic-card elastic-node">
+<h3>elastic-master01</h3><table>
+<tr>
+<td>Role</td>
+<td>Master</td>
+</tr><tr>
+<td>IP</td>
+<td>10.10.10.10</td>
+</tr><tr>
+<td>RAM</td>
+<td>8 GB</td>
+</tr><tr>
+<td>CPU</td>
+<td>4 vCPU</td>
+</tr><tr>
+<td>Disk</td>
+<td>100 GB</td>
+</tr><tr>
+<td>OS</td>
+<td>RHEL 9</td>
+</tr>
+</table>
+</div><h2>Servidor</h2>
+<div class="elastic-card elastic-server"><h3>srv-elastic01</h3><table><tr>
+<td>Environment</td>
+<td>Producción</td>
+</tr><tr>
+<td>Operating System</td>
+<td>RHEL 9</td>
+</tr><tr>
+<td>CPU</td>
+<td>8 vCPU</td>
+</tr><tr>
+<td>RAM</td>
+<td>32 GB</td>
+</tr><tr>
+<td>Storage</td>
+<td>500 GB</td>
+</tr><tr>
+<td>IP</td>
+<td>10.10.10.20</td>
+</tr></table></div><h2>Topología</h2>
+<div class="elastic-card elastic-topology">
+<h3>Topology</h3><table>
+<tr>
+<td>Environment</td>
+<td>Producción</td>
+</tr><tr>
+<td>Sites</td>
+<td>2</td>
+</tr><tr>
+<td>Total Nodes</td>
+<td>16</td>
+</tr>
+</table>
+</div><h1>LOGSTASH</h1>
+<h2>Arquitectura General</h2>
+<p>La siguiente imagen muestra la arquitectura implementada.</p>
+<p><img src="images/arquitectura.png" alt="Arquitectura General de Logstash"></p>
+<h2>Introducción</h2>
+<p>Después de realizar todas las pruebas de validación del servicio, permisos, pipelines básicos y conectividad hacia Elasticsearch, se procede a realizar la integración de las diferentes tecnologías.</p>
+<p>En este caso se implementa una arquitectura de pipelines distribuidos utilizando el plugin <code>pipeline</code>, permitiendo separar el procesamiento por tecnología y facilitando:</p>
+<ul>
+<li>Escalabilidad</li>
+<li>Mantenimiento</li>
+<li>Troubleshooting</li>
+<li>Separación lógica de flujos</li>
+<li>Procesamiento independiente</li>
+<li>Integraciones multi-tecnología</li>
+</ul>
+<blockquote>
+<p>Esta arquitectura permite escalar cada tecnología de forma independiente.</p>
+</blockquote>
+<p><strong>Importante:</strong> Todos los pipelines deben validar correctamente antes de pasar a producción.</p>
+<h2>Arquitectura</h2>
+<div class="elastic-card"><h2>Arquitectura Logstash</h2><table><tr>
+<td>Environment</td>
+<td>Producción</td>
+</tr><tr>
+<td>Security</td>
+<td>Habilitada</td>
+</tr><tr>
+<td>Monitoring</td>
+<td>Habilitado</td>
+</tr><tr>
+<td>Nodes</td>
+<td>1</td>
+</tr></table></div><h2>Servidor</h2>
+<div class="elastic-card elastic-server"><h3>logstash01</h3><table><tr>
+<td>Environment</td>
+<td>Producción</td>
+</tr><tr>
+<td>Operating System</td>
+<td>RHEL 9</td>
+</tr><tr>
+<td>CPU</td>
+<td>8 vCPU</td>
+</tr><tr>
+<td>RAM</td>
+<td>16 GB</td>
+</tr><tr>
+<td>Storage</td>
+<td>500 GB</td>
+</tr><tr>
+<td>IP</td>
+<td>172.29.xx.xx</td>
+</tr></table></div><h2>Instalación de Logstash RPM</h2>
+<h3>Conexión SSH</h3>
+<pre><code class="hljs language-bash">ssh elastic@IP
+</code></pre><h3>Credenciales</h3>
+<h4>Usuario</h4>
+<pre><code class="hljs language-text">elastic
+</code></pre><h4>Password</h4>
+<pre><code class="hljs language-text">PAS
+</code></pre><h2>Instalación del RPM</h2>
+<h3>Ir a la ruta donde está el RPM</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /tmp/
+</code></pre><h3>Validar que el RPM exista</h3>
+<pre><code class="hljs language-bash">ll logstash-9.3.1-x86_64.rpm
+</code></pre><h3>Resultado esperado</h3>
+<pre><code class="hljs language-bash">-rw-r--r--. 1 root root XXXXXXXX fecha logstash-9.3.1-x86_64.rpm
+</code></pre><h2>Instalar Logstash</h2>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> rpm -ivh logstash-9.3.1-x86_64.rpm
+</code></pre><h3>Explicación de parámetros</h3>
+<table>
+<thead>
+<tr>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i</td>
+<td>Instala</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>Modo verbose</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>Muestra progreso</td>
+</tr>
+</tbody></table>
+<h2>Validación del Servicio</h2>
+<h3>Validar estado del servicio</h3>
+<pre><code class="hljs language-bash">systemctl status logstash.service
+</code></pre><h3>Resultado esperado</h3>
+<h4>Servicio detenido</h4>
+<pre><code class="hljs language-bash">● logstash.service - logstash
+   Loaded: loaded (/usr/lib/systemd/system/logstash.service; enabled)
+   Active: inactive (dead)
+</code></pre><h4>Servicio iniciado</h4>
+<pre><code class="hljs language-bash">● logstash.service - logstash
+   Loaded: loaded (/usr/lib/systemd/system/logstash.service; enabled)
+   Active: active (running)
+</code></pre><h3>Directorios de Configuración</h3>
+<h4>Ir a configuración de Logstash</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /etc/logstash/
+</code></pre><h4>Validar contenido</h4>
+<pre><code class="hljs language-bash">ll
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-bash">conf.d/
+jvm.options
+log4j2.properties
+logstash.yml
+pipelines.yml
+startup.options
+</code></pre><h3>Ir al directorio de pipelines</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /etc/logstash/conf.d
+</code></pre><blockquote>
+<p>Aquí se almacenan los archivos <code>.conf</code>.</p>
+</blockquote>
+<h3>Logs de Logstash</h3>
+<h4>Ir a directorio de logs</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /var/log/logstash
+</code></pre><h3>Validación de Permisos</h3>
+<h4>Validar permisos actuales</h4>
+<pre><code class="hljs language-bash">ll -d /var/log/logstash
+</code></pre><h4>Usuario y Grupo Correctos</h4>
+<pre><code class="hljs language-text">logstash:logstash
+</code></pre><h4>Cambiar owner y grupo</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">chown</span> -R logstash:logstash /var/log/logstash
+<span class="hljs-built_in">sudo</span> <span class="hljs-built_in">chown</span> -R logstash:logstash /etc/logstash
+</code></pre><h3>Permisos Recomendados</h3>
+<h4>Permisos para directorios</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> find /var/log/logstash -<span class="hljs-built_in">type</span> d -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">chmod</span> 774 {} \;
+<span class="hljs-built_in">sudo</span> find /etc/logstash/conf.d -<span class="hljs-built_in">type</span> d -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">chmod</span> 774 {} \;
+</code></pre><h4>Permisos para archivos</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> find /var/log/logstash -<span class="hljs-built_in">type</span> f -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">chmod</span> 664 {} \;
+<span class="hljs-built_in">sudo</span> find /etc/logstash/conf.d/*.conf -<span class="hljs-built_in">type</span> f -<span class="hljs-built_in">exec</span> <span class="hljs-built_in">chmod</span> 664 {} \;
+</code></pre><h3>Explicación de Permisos</h3>
+<h4>Permiso 664</h4>
+<pre><code class="hljs language-text">664 = rw-rw-r--
+</code></pre><table>
+<thead>
+<tr>
+<th>Usuario</th>
+<th>Permisos</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Owner</td>
+<td>Lectura + Escritura</td>
+</tr>
+<tr>
+<td>Grupo</td>
+<td>Lectura + Escritura</td>
+</tr>
+<tr>
+<td>Otros</td>
+<td>Solo lectura</td>
+</tr>
+</tbody></table>
+<h4>Permiso 744</h4>
+<pre><code class="hljs language-text">774 = rwxrwxr--
+</code></pre><table>
+<thead>
+<tr>
+<th>Usuario</th>
+<th>Permisos</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Owner</td>
+<td>Lectura + Escritura + Ejecución</td>
+</tr>
+<tr>
+<td>Grupo</td>
+<td>Lectura + Escritura + Ejecución</td>
+</tr>
+<tr>
+<td>Otros</td>
+<td>Solo lectura</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Los directorios necesitan permiso de ejecución para poder acceder a ellos.</p>
+</blockquote>
+<h4>Agregar Usuario elastic al Grupo logstash</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> usermod -aG logstash elastic
+</code></pre><h4>Validar grupos del usuario</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">groups</span> elastic
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-bash">elastic wheel logstash
+</code></pre><h3>Validación Manual de Logstash</h3>
+<h4>0. Comando de prueba</h4>
+<pre><code class="hljs language-bash">/usr/share/logstash/bin/logstash --path.settings /etc/logstash -e <span class="hljs-string">&#x27;input { stdin { } } output { stdout { codec =&gt; rubydebug } }&#x27;</span>
+</code></pre><h4>¿Para qué sirve este comando?</h4>
+<p>Este comando permite validar:</p>
+<ul>
+<li>Funcionamiento de Java</li>
+<li>Arranque de Logstash</li>
+<li>Compilación del pipeline</li>
+<li>Funcionamiento de plugins</li>
+<li>Validación de permisos</li>
+<li>Validación del path.settings</li>
+<li>Correcta instalación de Logstash</li>
+</ul>
+<h3>Validación Manual de Logstash con User Logstash</h3>
+<h4>0. Comando de prueba</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- /usr/share/logstash/bin/logstash --path.settings /etc/logstash -e <span class="hljs-string">&#x27;input { stdin { } } output { stdout { codec =&gt; rubydebug } }&#x27;</span>
+</code></pre><h4>1. Ejecutar como usuario logstash</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash --
+</code></pre><p>Significa:</p>
+<blockquote>
+<p>&quot;Ejecuta el siguiente comando usando el usuario <code>logstash</code>&quot;</p>
+</blockquote>
+<p>NO se ejecuta como root.</p>
+<blockquote>
+<p>¿Por qué esto es importante?</p>
+</blockquote>
+<p>Porque el servicio de Logstash en producción NO corre como root.</p>
+<p>Corre como:</p>
+<pre><code class="hljs language-bash">logstash:logstash
+</code></pre><p>Entonces este comando permite validar:</p>
+<ul>
+<li>permisos reales</li>
+<li>acceso a logs</li>
+<li>acceso a pipelines</li>
+<li>acceso a certificados</li>
+<li>acceso a colas</li>
+<li>acceso a plugins</li>
+<li>acceso a sincedb</li>
+</ul>
+<h4>2. Ejecutable de Logstash</h4>
+<pre><code class="hljs language-bash">/usr/share/logstash/bin/logstash
+</code></pre><p>Es el binario principal de Logstash.</p>
+<h4>3. Path de configuración</h4>
+<pre><code class="hljs language-bash">--path.settings /etc/logstash
+</code></pre><p>Le indica dónde están:</p>
+<ul>
+<li><code>logstash.yml</code></li>
+<li><code>pipelines.yml</code></li>
+<li><code>jvm.options</code></li>
+<li>configuraciones globales</li>
+</ul>
+<h4>4. Pipeline inline temporal</h4>
+<pre><code class="hljs language-bash">-e <span class="hljs-string">&#x27;input { stdin { } } output { stdout { codec =&gt; rubydebug } }&#x27;</span>
+</code></pre><p>Crea un pipeline temporal en memoria.</p>
+<p>NO usa archivos <code>.conf</code>.</p>
+<blockquote>
+<p>¿Qué hace ese pipeline?</p>
+</blockquote>
+<h4>Input</h4>
+<pre><code class="hljs language-bash">stdin
+</code></pre><p>Lee lo que escribes por teclado.</p>
+<h4>Output</h4>
+<pre><code class="hljs language-json">stdout <span class="hljs-punctuation">{</span> codec =&gt; rubydebug <span class="hljs-punctuation">}</span>
+</code></pre><p>Imprime eventos parseados en consola.</p>
+<h4>Flujo completo</h4>
+<p>Tú escribes:</p>
+<pre><code class="hljs language-bash">hola
+</code></pre><p>Logstash procesa el evento y responde:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+      <span class="hljs-string">&quot;message&quot;</span> =&gt; <span class="hljs-string">&quot;hola&quot;</span><span class="hljs-punctuation">,</span>
+     <span class="hljs-string">&quot;@version&quot;</span> =&gt; <span class="hljs-string">&quot;1&quot;</span><span class="hljs-punctuation">,</span>
+   <span class="hljs-string">&quot;@timestamp&quot;</span> =&gt; <span class="hljs-number">2026</span><span class="hljs-number">-05</span><span class="hljs-number">-28</span>T00<span class="hljs-punctuation">:</span><span class="hljs-number">00</span><span class="hljs-punctuation">:</span><span class="hljs-number">00.000</span>Z<span class="hljs-punctuation">,</span>
+         <span class="hljs-string">&quot;host&quot;</span> =&gt; <span class="hljs-string">&quot;server&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><blockquote>
+<p>¿Qué valida realmente este comando?</p>
+</blockquote>
+<h4>Validaciones críticas</h4>
+<table>
+<thead>
+<tr>
+<th>Validación</th>
+<th>Qué revisa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Usuario</td>
+<td>Que <code>logstash</code> puede ejecutar</td>
+</tr>
+<tr>
+<td>Permisos</td>
+<td>Lectura/escritura reales</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>JVM funcionando</td>
+</tr>
+<tr>
+<td>Pipeline</td>
+<td>Compilación correcta</td>
+</tr>
+<tr>
+<td>Plugins</td>
+<td>Carga de plugins</td>
+</tr>
+<tr>
+<td>Configuración</td>
+<td><code>/etc/logstash</code> correcto</td>
+</tr>
+<tr>
+<td>Logs</td>
+<td>Acceso a <code>/var/log/logstash</code></td>
+</tr>
+<tr>
+<td>Queue</td>
+<td>Acceso a <code>path.data</code></td>
+</tr>
+<tr>
+<td>Certificados</td>
+<td>Lectura de <code>.pem</code> o <code>.p12</code></td>
+</tr>
+<tr>
+<td>Sincedb</td>
+<td>Escritura de estados</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>¿Por qué es mejor que ejecutarlo normal?</p>
+</blockquote>
+<p>Porque si haces:</p>
+<pre><code class="hljs language-bash">/usr/share/logstash/bin/logstash ...
+</code></pre><p>lo ejecutas con TU usuario actual.</p>
+<p>Tal vez tu usuario sí tiene permisos, pero <code>logstash</code> no.</p>
+<p>Entonces el servicio podría fallar aunque la prueba manual funcione.</p>
+<h3>Problemas que detecta este comando: Ejemplos reales</h3>
+<h4>Permission denied</h4>
+<pre><code class="hljs language-bash">Permission denied - /var/log/logstash
+</code></pre><h4>Certificados inaccesibles</h4>
+<pre><code class="hljs language-bash">Could not <span class="hljs-built_in">read</span> certificate
+</code></pre><h4>Sin permisos sobre pipeline</h4>
+<pre><code class="hljs language-bash">Cannot load pipeline configuration
+</code></pre><h4>Error en path.data</h4>
+<pre><code class="hljs language-bash">Path <span class="hljs-string">&quot;/var/lib/logstash&quot;</span> must be writable
+</code></pre><h4>¿Por qué esto es importante?</h4>
+<p>Porque el servicio de Logstash en producción NO corre como root.</p>
+<p>Corre como:</p>
+<pre><code class="hljs language-bash">logstash:logstash
+</code></pre><p>Entonces este comando permite validar:</p>
+<ul>
+<li>Permisos reales</li>
+<li>Acceso a logs</li>
+<li>Acceso a pipelines</li>
+<li>Acceso a certificados</li>
+<li>Acceso a colas</li>
+<li>Acceso a plugins</li>
+<li>Acceso a sincedb</li>
+</ul>
+<h4>¿Para qué sirve este comando?</h4>
+<p>Este comando permite validar:</p>
+<ul>
+<li>Funcionamiento de Java</li>
+<li>Arranque de Logstash</li>
+<li>Compilación del pipeline</li>
+<li>Funcionamiento de plugins</li>
+<li>Validación de permisos</li>
+<li>Validación del path.settings</li>
+<li>Correcta instalación de Logstash</li>
+</ul>
+<h3>Validar Configuración antes de iniciar servicio</h3>
+<h4>Validación recomendada</h4>
+<pre><code class="hljs language-bash">/usr/share/logstash/bin/logstash --path.settings /etc/logstash --config.test_and_exit
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-text">Configuration OK
+</code></pre><h3>Validación de Pipeline Logstash: Crear Pipeline de Prueba</h3>
+<h4>Ir a la ruta de pipelines</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cd</span> /etc/logstash/conf.d/
+</code></pre><h4>Crear archivo de configuración</h4>
+<pre><code class="hljs language-bash">vi test_logstash.conf
+</code></pre><h4>Configuración de prueba hacia archivo local</h4>
+<pre><code class="hljs language-ruby">input {
+  generator {
+    message =&gt; <span class="hljs-string">&quot;prueba pipeline logstash&quot;</span>
+    count =&gt; <span class="hljs-number">5</span>
+  }
+}
+
+filter {
+  mutate {
+    add_field =&gt; {
+      <span class="hljs-string">&quot;entorno&quot;</span> =&gt; <span class="hljs-string">&quot;test&quot;</span>
+      <span class="hljs-string">&quot;origen&quot;</span> =&gt; <span class="hljs-string">&quot;generator&quot;</span>
+    }
+  }
+}
+
+output {
+  file {
+    path =&gt; <span class="hljs-string">&quot;/tmp/logstash-generator-test.json&quot;</span>
+    codec =&gt; json_lines
+  }
+}
+</code></pre><h3>Explicación del Pipeline</h3>
+<h4>Input Generator</h4>
+<pre><code class="hljs language-ruby">generator
+</code></pre><p>Plugin utilizado para generar eventos de prueba automáticamente.</p>
+<h4>Parámetros</h4>
+<table>
+<thead>
+<tr>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>message</td>
+<td>Mensaje generado</td>
+</tr>
+<tr>
+<td>count</td>
+<td>Cantidad de eventos</td>
+</tr>
+</tbody></table>
+<h4>Filter Mutate</h4>
+<pre><code class="hljs language-ruby">mutate
+</code></pre><p>Permite modificar eventos.</p>
+<p>En este caso agrega campos personalizados.</p>
+<h4>Campos agregados</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>entorno</td>
+<td>test</td>
+</tr>
+<tr>
+<td>origen</td>
+<td>generator</td>
+</tr>
+</tbody></table>
+<h4>Output File</h4>
+<pre><code class="hljs language-ruby">file
+</code></pre><p>Guarda eventos procesados en un archivo local.</p>
+<h4>Archivo generado</h4>
+<pre><code class="hljs language-bash">/tmp/logstash-generator-test.json
+</code></pre><h4>Codec utilizado</h4>
+<pre><code class="hljs language-ruby">json_lines
+</code></pre><p>Genera una línea JSON por evento.</p>
+<h4>Validar configuración antes de ejecutar</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- /usr/share/logstash/bin/logstash \
+--path.settings /etc/logstash \
+--config.test_and_exit
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-text">Configuration OK
+</code></pre><h4>Ejecutar pipeline manualmente</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- /usr/share/logstash/bin/logstash \
+--path.settings /etc/logstash
+</code></pre><h4>Validar archivo generado</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">cat</span> /tmp/logstash-generator-test.json
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;prueba pipeline logstash&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;entorno&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;test&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;origen&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;generator&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><h3>Validar múltiples eventos</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">wc</span> -l /tmp/logstash-generator-test.json
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-text">5
+</code></pre><p>Porque el generator crea:</p>
+<pre><code class="hljs language-ruby">count =&gt; <span class="hljs-number">5</span>
+</code></pre><h3>Pipeline hacia Elasticsearch</h3>
+<h4>Editar archivo</h4>
+<pre><code class="hljs language-bash">vi /etc/logstash/conf.d/test_logstash.conf
+</code></pre><h4>Configuración Elasticsearch Output</h4>
+<pre><code class="hljs language-ruby">input {
+  generator {
+    message =&gt; <span class="hljs-string">&quot;prueba pipeline logstash&quot;</span>
+    count =&gt; <span class="hljs-number">0</span>
+  }
+}
+
+filter {
+  mutate {
+    add_field =&gt; {
+      <span class="hljs-string">&quot;entorno&quot;</span> =&gt; <span class="hljs-string">&quot;test&quot;</span>
+      <span class="hljs-string">&quot;origen&quot;</span> =&gt; <span class="hljs-string">&quot;generator&quot;</span>
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts =&gt; [<span class="hljs-string">&quot;https://172.29.80.96:9200&quot;</span>,<span class="hljs-string">&quot;https://172.29.80.97:9200&quot;</span>]
+    index =&gt; <span class="hljs-string">&quot;logstash-generator-test&quot;</span>
+    api_key =&gt; <span class="hljs-string">&quot;${ES_API_KEY_SYSLOG}&quot;</span>
+    ssl_enabled =&gt; <span class="hljs-literal">true</span>
+    ssl_verification_mode =&gt; <span class="hljs-string">&quot;none&quot;</span>
+  }
+}
+</code></pre><h3>Explicación del Output Elasticsearch</h3>
+<h4>Hosts</h4>
+<pre><code class="hljs language-ruby">hosts
+</code></pre><p>Lista de nodos de Elasticsearch.</p>
+<p>Se recomienda mínimo 2 hosts para alta disponibilidad.</p>
+<h4>Índice destino</h4>
+<pre><code class="hljs language-ruby">index =&gt; <span class="hljs-string">&quot;logstash-generator-test&quot;</span>
+</code></pre><p>Índice donde se almacenarán los eventos.</p>
+<h4>Usuario y Password</h4>
+<pre><code class="hljs language-ruby">api_key
+</code></pre><p>Credenciales de autenticación.</p>
+<h4>SSL Enabled</h4>
+<pre><code class="hljs language-ruby">ssl_enabled =&gt; <span class="hljs-literal">true</span>
+</code></pre><p>Habilita conexión HTTPS/TLS.</p>
+<h4>SSL Verification Mode</h4>
+<pre><code class="hljs language-ruby">ssl_verification_mode =&gt; <span class="hljs-string">&quot;none&quot;</span>
+</code></pre><p>Deshabilita validación del certificado SSL.</p>
+<blockquote>
+<p>Solo recomendado para ambientes de laboratorio o pruebas.</p>
+</blockquote>
+<h4>Recomendación Productiva</h4>
+<p>NO utilizar:</p>
+<pre><code class="hljs language-ruby">ssl_verification_mode =&gt; <span class="hljs-string">&quot;none&quot;</span>
+</code></pre><p>En producción utilizar:</p>
+<pre><code class="hljs language-ruby">ssl_certificate_authorities
+</code></pre><p>o certificados válidos.</p>
+<h3>Validar configuración</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- /usr/share/logstash/bin/logstash \
+--path.settings /etc/logstash \
+--config.test_and_exit
+</code></pre><h4>Iniciar servicio</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl restart logstash
+</code></pre><h4>Validar estado</h4>
+<pre><code class="hljs language-bash">systemctl status logstash
+</code></pre><h4>Validar logs en tiempo real</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">tail</span> -f /var/log/logstash/logstash-plain.log
+</code></pre><h3>Validar indexación en Elasticsearch</h3>
+<h4>Desde Kibana Dev Tools</h4>
+<pre><code class="hljs language-json">GET logstash-generator-test/_search
+</code></pre><h4>Resultado esperado</h4>
+<p>Eventos indexados correctamente:</p>
+<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;hits&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;hits&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;_source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;prueba pipeline logstash&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;entorno&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;test&quot;</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-attr">&quot;origen&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;generator&quot;</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre><h3>Validar índice creado</h3>
+<pre><code class="hljs language-json">GET _cat/indices/logstash-generator-test?v
+</code></pre><h2>Configuración de Capabilities para Puerto 514 en Logstash</h2>
+<h3>Introducción</h3>
+<p>En Linux, los puertos menores a <code>1024</code> son considerados puertos privilegiados.</p>
+<p>El puerto Syslog tradicional:</p>
+<pre><code class="hljs language-text">514
+</code></pre><p>requiere privilegios especiales para poder ser utilizado por aplicaciones que NO corren como usuario root.</p>
+<p>En el caso de Logstash, el servicio normalmente se ejecuta con el usuario:</p>
+<pre><code class="hljs language-text">logstash
+</code></pre><p>por lo tanto fue necesario realizar una modificación en el servicio systemd para permitir que Logstash pueda escuchar el puerto Syslog 514 sin ejecutar el servicio como root.</p>
+<h3>Ruta Modificada</h3>
+<p>La modificación fue aplicada sobre el servicio systemd de Logstash ubicado en:</p>
+<pre><code class="hljs language-bash">/usr/lib/systemd/system/logstash.service
+</code></pre><h3>Configuración Aplicada</h3>
+<h4>Editar servicio</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> vi /usr/lib/systemd/system/logstash.service
+</code></pre><h3>Configuración agregada</h3>
+<pre><code class="hljs language-ini"><span class="hljs-section">[Service]</span>
+<span class="hljs-attr">AmbientCapabilities</span>=CAP_NET_BIND_SERVICE
+<span class="hljs-attr">CapabilityBoundingSet</span>=CAP_NET_BIND_SERVICE
+</code></pre><h3>Explicación de la Configuración</h3>
+<h4>AmbientCapabilities</h4>
+<pre><code class="hljs language-ini"><span class="hljs-attr">AmbientCapabilities</span>=CAP_NET_BIND_SERVICE
+</code></pre><p>Permite que el proceso Logstash pueda abrir puertos privilegiados sin ejecutarse como root.</p>
+<h3>CapabilityBoundingSet</h3>
+<pre><code class="hljs language-ini"><span class="hljs-attr">CapabilityBoundingSet</span>=CAP_NET_BIND_SERVICE
+</code></pre><p>Limita las capacidades disponibles únicamente a:</p>
+<pre><code class="hljs language-text">CAP_NET_BIND_SERVICE
+</code></pre><p>Esto mejora la seguridad del servicio.</p>
+<h3>¿Para qué sirve CAP_NET_BIND_SERVICE?</h3>
+<p>La capability:</p>
+<pre><code class="hljs language-text">CAP_NET_BIND_SERVICE
+</code></pre><p>permite abrir puertos menores a:</p>
+<pre><code class="hljs language-text">1024
+</code></pre><p>por ejemplo:</p>
+<table>
+<thead>
+<tr>
+<th>Puerto</th>
+<th>Servicio</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>80</td>
+<td>HTTP</td>
+</tr>
+<tr>
+<td>443</td>
+<td>HTTPS</td>
+</tr>
+<tr>
+<td>514</td>
+<td>Syslog</td>
+</tr>
+<tr>
+<td>6514</td>
+<td>Syslog TLS</td>
+</tr>
+</tbody></table>
+<h3>Problema Solucionado</h3>
+<p>Sin esta configuración Logstash genera errores similares a:</p>
+<pre><code class="hljs language-text">Permission denied
+</code></pre><p>o:</p>
+<pre><code class="hljs language-text">Cannot assign requested address
+</code></pre><p>al intentar escuchar el puerto:</p>
+<pre><code class="hljs language-ruby">port =&gt; <span class="hljs-number">514</span>
+</code></pre><h3>Aplicar cambios</h3>
+<h4>Recargar systemd</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl daemon-reload
+</code></pre><h4>Validar puerto 514</h4>
+<pre><code class="hljs language-bash">ss -tulpn | grep 514
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-bash">udp   UNCONN   0   0   0.0.0.0:514
+</code></pre><h4>Validar configuración aplicada</h4>
+<pre><code class="hljs language-bash">systemctl <span class="hljs-built_in">cat</span> logstash
+</code></pre><h4>Validar capabilities activas</h4>
+<pre><code class="hljs language-bash">systemctl show logstash | grep Capability
+</code></pre><h3>Importante</h3>
+<p>Esta configuración solo es necesaria cuando Logstash utiliza puertos privilegiados como:</p>
+<pre><code class="hljs language-ruby">port =&gt; <span class="hljs-number">514</span>
+</code></pre><h2>Buenas prácticas</h2>
+<h3>Mantener un pipeline por archivo</h3>
+<p>Ejemplo:</p>
+<pre><code class="hljs language-text">10-input.conf
+20-filter.conf
+30-output.conf
+</code></pre><h2>Recomendaciones de Seguridad</h2>
+<table>
+<thead>
+<tr>
+<th>Configuración</th>
+<th>Recomendación</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ssl_verification_mode</td>
+<td>full</td>
+</tr>
+<tr>
+<td>Passwords hardcodeados</td>
+<td>Evitar</td>
+</tr>
+<tr>
+<td>Certificados</td>
+<td>Utilizar CA válida</td>
+</tr>
+<tr>
+<td>Usuario Elasticsearch</td>
+<td>Permisos mínimos</td>
+</tr>
+</tbody></table>
+<h2>Validaciones profesionales recomendadas</h2>
+<h3>Validar permisos</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- <span class="hljs-built_in">cat</span> /etc/logstash/conf.d/test_logstash.conf
+</code></pre><h3>Validar acceso Elasticsearch</h3>
+<pre><code class="hljs language-bash">curl -k -u TU_USUARIO:TU_PASSWORD https://TU_HOST_ES:9200
+</code></pre><h2>Errores comunes</h2>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Causa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Connection refused</td>
+<td>Elasticsearch apagado</td>
+</tr>
+<tr>
+<td>PKIX path building failed</td>
+<td>Problema certificados</td>
+</tr>
+<tr>
+<td>Permission denied</td>
+<td>Permisos incorrectos</td>
+</tr>
+<tr>
+<td>Pipeline aborted</td>
+<td>Error sintaxis</td>
+</tr>
+<tr>
+<td>Unauthorized</td>
+<td>Usuario/password incorrectos</td>
+</tr>
+</tbody></table>
+<h2>Comando recomendado de troubleshooting</h2>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- /usr/share/logstash/bin/logstash \
+--path.settings /etc/logstash \
+--log.level debug
+</code></pre><h3>Iniciar Servicio</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl start logstash
+</code></pre><h3>Habilitar inicio automático</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> logstash
+</code></pre><h3>Validar logs en tiempo real</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">tail</span> -f /var/log/logstash/logstash-plain.log
+</code></pre><h2>Validar puertos</h2>
+<h3>Con ss</h3>
+<pre><code class="hljs language-bash">ss -tulpn | grep java
+</code></pre><h3>Con netstat</h3>
+<pre><code class="hljs language-bash">netstat -tulpn | grep java
+</code></pre><h3>Reiniciar Servicio</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl restart logstash
+</code></pre><h2>Validar consumo de recursos</h2>
+<h3>Con top</h3>
+<pre><code class="hljs language-bash">top
+</code></pre><h3>Con htop</h3>
+<pre><code class="hljs language-bash">htop
+</code></pre><h3>Validar proceso JVM</h3>
+<pre><code class="hljs language-bash">ps -ef | grep logstash
+</code></pre><h2>Recomendaciones Productivas</h2>
+<h3>Evitar uso de root</h3>
+<p>Mantener permisos adecuados:</p>
+<table>
+<thead>
+<tr>
+<th>Ruta</th>
+<th>Permisos</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>/etc/logstash</td>
+<td>775</td>
+</tr>
+<tr>
+<td>*.conf</td>
+<td>664</td>
+</tr>
+<tr>
+<td>/var/log/logstash</td>
+<td>logstash:logstash</td>
+</tr>
+</tbody></table>
+<h2>Errores comunes evitados</h2>
+<ul>
+<li>permission denied</li>
+<li>cannot create queue</li>
+<li>cannot write sincedb</li>
+<li>failed to open log file</li>
+<li>dead letter queue errors</li>
+<li>pipeline terminated</li>
+<li>plugin initialization failed</li>
+</ul>
+<h2>Estructura de Archivos</h2>
+<pre><code class="hljs language-text">/etc/logstash/conf.d/
+
+00-input-syslog.conf
+10-hitachi.conf
+90-desconocido.conf
+</code></pre><h2>Pipeline Principal Syslog Router</h2>
+<h3>Archivo</h3>
+<pre><code class="hljs language-text">00-input-syslog.conf
+</code></pre><h4>Configuración</h4>
+<pre><code class="hljs language-ruby">input {
+  syslog {
+    id =&gt; <span class="hljs-string">&quot;syslog_514_router&quot;</span>
+    host =&gt; <span class="hljs-string">&quot;0.0.0.0&quot;</span>
+    port =&gt; <span class="hljs-number">514</span>
+  }
+}
+
+filter {
+
+  <span class="hljs-keyword">if</span> [host][ip] <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;172.29.16.160&quot;</span>, <span class="hljs-string">&quot;172.29.16.161&quot;</span>, <span class="hljs-string">&quot;172.29.16.162&quot;</span>, <span class="hljs-string">&quot;172.29.16.163&quot;</span>, <span class="hljs-string">&quot;172.29.16.164&quot;</span>, <span class="hljs-string">&quot;172.29.16.165&quot;</span>] {
+    mutate {
+      add_field =&gt; {
+        <span class="hljs-string">&quot;tecnologia&quot;</span> =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+      }
+    }
+
+  } <span class="hljs-keyword">else</span> {
+
+    mutate {
+      add_field =&gt; {
+        <span class="hljs-string">&quot;tecnologia&quot;</span> =&gt; <span class="hljs-string">&quot;desconocido&quot;</span>
+      }
+    }
+
+  }
+
+}
+
+output {
+
+  <span class="hljs-keyword">if</span> [tecnologia] == <span class="hljs-string">&quot;hitachi&quot;</span> {
+
+    pipeline {
+      send_to =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+    }
+
+  } <span class="hljs-keyword">else</span> {
+
+    pipeline {
+      send_to =&gt; <span class="hljs-string">&quot;desconocido&quot;</span>
+    }
+
+  }
+
+}
+</code></pre><h3>Explicación del Pipeline Router</h3>
+<h4>Input Syslog</h4>
+<p>El pipeline escucha eventos Syslog en el puerto:</p>
+<pre><code class="hljs language-text">514
+</code></pre><p>desde cualquier interfaz:</p>
+<pre><code class="hljs language-text">0.0.0.0
+</code></pre><h4>Identificación de Tecnología</h4>
+<p>Se realiza validación de la IP origen:</p>
+<pre><code class="hljs language-ruby"><span class="hljs-keyword">if</span> [host][ip] <span class="hljs-keyword">in</span> [...]
+</code></pre><p>Dependiendo de la IP se agrega el campo:</p>
+<pre><code class="hljs language-ruby">tecnologia
+</code></pre><h4>Tecnologías configuradas</h4>
+<table>
+<thead>
+<tr>
+<th>IP</th>
+<th>Tecnología</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>172.29.16.160</td>
+<td>hitachi</td>
+</tr>
+<tr>
+<td>172.29.16.161</td>
+<td>hitachi</td>
+</tr>
+<tr>
+<td>172.29.16.162</td>
+<td>hitachi</td>
+</tr>
+<tr>
+<td>172.29.16.163</td>
+<td>hitachi</td>
+</tr>
+<tr>
+<td>172.29.16.164</td>
+<td>hitachi</td>
+</tr>
+<tr>
+<td>172.29.16.165</td>
+<td>hitachi</td>
+</tr>
+</tbody></table>
+<h4>Eventos Desconocidos</h4>
+<p>Cualquier evento que no coincida con las IP configuradas será marcado como:</p>
+<pre><code class="hljs language-text">desconocido
+</code></pre><p>Esto permite:</p>
+<ul>
+<li>identificar nuevas fuentes</li>
+<li>detectar equipos no inventariados</li>
+<li>evitar pérdida de eventos</li>
+<li>facilitar troubleshooting</li>
+</ul>
+<h4>Redirección mediante Pipelines</h4>
+<p>Se utiliza el plugin:</p>
+<pre><code class="hljs language-ruby">pipeline
+</code></pre><p>para enviar eventos internamente hacia otros pipelines.</p>
+<h3>Pipeline Tecnología Hitachi</h3>
+<h4>Archivo</h4>
+<pre><code class="hljs language-text">10-hitachi.conf
+</code></pre><h4>Configuración</h4>
+<pre><code class="hljs language-ruby">input {
+  pipeline {
+    address =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+  }
+}
+
+filter {
+
+  mutate {
+    add_field =&gt; {
+      <span class="hljs-string">&quot;[event][dataset]&quot;</span> =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+    }
+  }
+
+}
+
+output {
+
+  elasticsearch {
+    hosts =&gt; [<span class="hljs-string">&quot;https://172.29.80.96:9200&quot;</span>, <span class="hljs-string">&quot;https://172.29.80.97:9200&quot;</span>]
+    data_stream =&gt; <span class="hljs-literal">true</span>
+    data_stream_type =&gt; <span class="hljs-string">&quot;logs&quot;</span>
+    data_stream_dataset =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+    data_stream_namespace =&gt; <span class="hljs-string">&quot;default&quot;</span>
+    api_key =&gt; <span class="hljs-string">&quot;${ES_API_KEY_SYSLOG}&quot;</span>
+    ssl_enabled =&gt; <span class="hljs-literal">true</span>
+    ssl_verification_mode =&gt; <span class="hljs-string">&quot;none&quot;</span>
+  }
+
+}
+</code></pre><h3>Explicación Pipeline Hitachi</h3>
+<h4>Input Pipeline</h4>
+<p>Recibe únicamente eventos enviados desde:</p>
+<pre><code class="hljs language-ruby">send_to =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+</code></pre><h4>Event Dataset</h4>
+<p>Se agrega:</p>
+<pre><code class="hljs language-ruby">[event][dataset] =&gt; <span class="hljs-string">&quot;hitachi&quot;</span>
+</code></pre><p>Este campo es utilizado por Elasticsearch y Kibana para:</p>
+<ul>
+<li>Data Streams</li>
+<li>Integraciones</li>
+<li>Dashboards</li>
+<li>Data Views</li>
+<li>ECS normalization</li>
+</ul>
+<h4>Data Stream</h4>
+<p>Los eventos son enviados al Data Stream:</p>
+<pre><code class="hljs language-text">logs-hitachi-default
+</code></pre><h4>Ventajas de Data Streams</h4>
+<ul>
+<li>ILM automático</li>
+<li>rollover automático</li>
+<li>mejor rendimiento</li>
+<li>manejo eficiente de índices</li>
+<li>integración nativa con Elastic</li>
+</ul>
+<h3>Pipeline Eventos Desconocidos</h3>
+<h4>Archivo</h4>
+<pre><code class="hljs language-text">90-desconocido.conf
+</code></pre><h4>Configuración</h4>
+<pre><code class="hljs language-ruby">input {
+  pipeline {
+    address =&gt; <span class="hljs-string">&quot;desconocido&quot;</span>
+  }
+}
+
+filter {
+
+  mutate {
+    add_field =&gt; {
+      <span class="hljs-string">&quot;[event][dataset]&quot;</span> =&gt; <span class="hljs-string">&quot;desconocido&quot;</span>
+    }
+  }
+
+}
+
+output {
+
+  elasticsearch {
+    hosts =&gt; [<span class="hljs-string">&quot;https://172.29.80.96:9200&quot;</span>, <span class="hljs-string">&quot;https://172.29.80.97:9200&quot;</span>]
+    data_stream =&gt; <span class="hljs-literal">true</span>
+    data_stream_type =&gt; <span class="hljs-string">&quot;logs&quot;</span>
+    data_stream_dataset =&gt; <span class="hljs-string">&quot;desconocido&quot;</span>
+    data_stream_namespace =&gt; <span class="hljs-string">&quot;default&quot;</span>
+    api_key =&gt; <span class="hljs-string">&quot;${ES_API_KEY_SYSLOG}&quot;</span>
+    ssl_enabled =&gt; <span class="hljs-literal">true</span>
+    ssl_verification_mode =&gt; <span class="hljs-string">&quot;none&quot;</span>
+  }
+
+}
+</code></pre><h4>Objetivo del Pipeline Desconocido</h4>
+<p>Este pipeline permite almacenar eventos no clasificados para:</p>
+<ul>
+<li>análisis posterior</li>
+<li>identificación de nuevas integraciones</li>
+<li>validación de inventario</li>
+<li>troubleshooting</li>
+<li>onboarding de nuevas tecnologías</li>
+</ul>
+<h3>Configuración pipelines.yml</h3>
+<h4>Archivo</h4>
+<pre><code class="hljs language-text">/etc/logstash/pipelines.yml
+</code></pre><h4>Configuración</h4>
+<pre><code class="hljs language-yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">pipeline.id:</span> <span class="hljs-string">syslog-router</span>
+  <span class="hljs-attr">path.config:</span> <span class="hljs-string">&quot;/etc/logstash/conf.d/00-input-syslog.conf&quot;</span>
+
+<span class="hljs-bullet">-</span> <span class="hljs-attr">pipeline.id:</span> <span class="hljs-string">syslog-hitachi</span>
+  <span class="hljs-attr">path.config:</span> <span class="hljs-string">&quot;/etc/logstash/conf.d/10-hitachi.conf&quot;</span>
+
+<span class="hljs-bullet">-</span> <span class="hljs-attr">pipeline.id:</span> <span class="hljs-string">desconocido</span>
+  <span class="hljs-attr">path.config:</span> <span class="hljs-string">&quot;/etc/logstash/conf.d/90-desconocido.conf&quot;</span>
+</code></pre><h4>Explicación pipelines.yml</h4>
+<p>Cada entrada define:</p>
+<table>
+<thead>
+<tr>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pipeline.id</td>
+<td>Nombre lógico del pipeline</td>
+</tr>
+<tr>
+<td>path.config</td>
+<td>Ruta del archivo <code>.conf</code></td>
+</tr>
+</tbody></table>
+<h4>Ventajas de Multipipeline</h4>
+<ul>
+<li>Separación de flujos</li>
+<li>Mejor rendimiento</li>
+<li>Troubleshooting independiente</li>
+<li>Escalabilidad</li>
+<li>Mantenimiento simplificado</li>
+<li>Evita pipelines monolíticos</li>
+</ul>
+<h3>Validación de Configuración</h3>
+<h4>Validar sintaxis</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> -u logstash -- /usr/share/logstash/bin/logstash \
+--path.settings /etc/logstash \
+--config.test_and_exit
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-text">Configuration OK
+</code></pre><h4>Reiniciar servicio</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> systemctl restart logstash
+</code></pre><h4>Validar estado</h4>
+<pre><code class="hljs language-bash">systemctl status logstash
+</code></pre><h4>Validar logs</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">tail</span> -f /var/log/logstash/logstash-plain.log
+</code></pre><h4>Validar pipelines activos</h4>
+<pre><code class="hljs language-bash">curl -X GET localhost:9600/_node/pipelines?pretty
+</code></pre><h3>Buenas prácticas recomendadas</h3>
+<h4>Nomenclatura de archivos</h4>
+<table>
+<thead>
+<tr>
+<th>Prefijo</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>00</td>
+<td>Inputs</td>
+</tr>
+<tr>
+<td>10-50</td>
+<td>Tecnologías</td>
+</tr>
+<tr>
+<td>90</td>
+<td>Fallback / desconocidos</td>
+</tr>
+</tbody></table>
+<h3>Recomendaciones de Seguridad</h3>
+<h4>Producción</h4>
+<p>Evitar:</p>
+<pre><code class="hljs language-ruby">ssl_verification_mode =&gt; <span class="hljs-string">&quot;none&quot;</span>
+</code></pre><p>Utilizar certificados válidos y autoridades certificadoras.</p>
+<h3>Recomendaciones adicionales</h3>
+<ul>
+<li>Utilizar API Keys dedicadas</li>
+<li>Separar pipelines por tecnología</li>
+<li>Mantener Data Streams independientes</li>
+<li>Implementar ILM</li>
+<li>Activar Dead Letter Queue</li>
+<li>Monitorear pipelines desde Kibana</li>
+</ul>
+<h3>Troubleshooting</h3>
+<h4>Validar puertos</h4>
+<pre><code class="hljs language-bash">ss -tulpn | grep 514
+</code></pre><h3>Validar conectividad Elasticsearch</h3>
+<pre><code class="hljs language-bash">curl -k https://ip:9200
+</code></pre><h3>Errores comunes</h3>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Posible causa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Address already in use</td>
+<td>Puerto 514 ocupado</td>
+</tr>
+<tr>
+<td>Permission denied</td>
+<td>Permisos insuficientes</td>
+</tr>
+<tr>
+<td>Pipeline aborted</td>
+<td>Error sintaxis</td>
+</tr>
+<tr>
+<td>Connection refused</td>
+<td>Elasticsearch inaccesible</td>
+</tr>
+<tr>
+<td>Unauthorized</td>
+<td>API Key inválida</td>
+</tr>
+<tr>
+<td>SSLHandshakeException</td>
+<td>Problemas TLS</td>
+</tr>
+</tbody></table>
+<h3>Validación de Tráfico Syslog con tcpdump</h3>
+<h4>Introducción</h4>
+<p>La herramienta <code>tcpdump</code> permite capturar y analizar tráfico de red en tiempo real.</p>
+<p>En ambientes con Logstash y Syslog es una de las herramientas más importantes para troubleshooting, ya que permite validar si los eventos realmente están llegando al servidor antes de ser procesados por Logstash.</p>
+<h4>Comando de Validación</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -i any udp port 514 and host 172.29.16.160
+</code></pre><h4>Explicación del Comando</h4>
+<table>
+<thead>
+<tr>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sudo</td>
+<td>Ejecuta el comando como administrador</td>
+</tr>
+<tr>
+<td>tcpdump</td>
+<td>Herramienta de captura de paquetes</td>
+</tr>
+<tr>
+<td>-i any</td>
+<td>Escucha en todas las interfaces</td>
+</tr>
+<tr>
+<td>udp</td>
+<td>Filtra tráfico UDP</td>
+</tr>
+<tr>
+<td>port 514</td>
+<td>Filtra puerto Syslog</td>
+</tr>
+<tr>
+<td>and host</td>
+<td>Filtra una IP específica</td>
+</tr>
+</tbody></table>
+<h4>¿Qué valida este comando?</h4>
+<p>Permite verificar:</p>
+<ul>
+<li>Llegada de logs Syslog</li>
+<li>Conectividad de red</li>
+<li>Configuración del dispositivo origen</li>
+<li>Firewall</li>
+<li>Routing</li>
+<li>ACLs</li>
+<li>NAT</li>
+<li>Configuración del puerto Syslog</li>
+</ul>
+<h4>Puerto Syslog</h4>
+<p>El puerto tradicional Syslog es:</p>
+<pre><code class="hljs language-text">UDP 514
+</code></pre><h4>Funcionamiento</h4>
+<p>El comando captura únicamente tráfico:</p>
+<ul>
+<li>UDP</li>
+<li>puerto 514</li>
+<li>relacionado con la IP indicada</li>
+</ul>
+<h4>Ejemplo de Resultado Esperado</h4>
+<pre><code class="hljs language-bash">14:32:10 IP 10.10.10.5.514 &gt; servidor.514: SYSLOG local7.info, length: 120
+</code></pre><h4>Interpretación</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.10.10.5</td>
+<td>Equipo origen</td>
+</tr>
+<tr>
+<td>514</td>
+<td>Puerto Syslog</td>
+</tr>
+<tr>
+<td>SYSLOG</td>
+<td>Tipo de tráfico</td>
+</tr>
+<tr>
+<td>length</td>
+<td>Tamaño del paquete</td>
+</tr>
+</tbody></table>
+<h3>Problemas que ayuda a identificar</h3>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Firewall bloqueando</td>
+<td>No llegan paquetes</td>
+</tr>
+<tr>
+<td>Equipo no envía logs</td>
+<td>Sin tráfico</td>
+</tr>
+<tr>
+<td>Puerto incorrecto</td>
+<td>Syslog configurado en otro puerto</td>
+</tr>
+<tr>
+<td>Problema de routing</td>
+<td>Tráfico no llega</td>
+</tr>
+<tr>
+<td>ACL de red</td>
+<td>Bloqueo intermedio</td>
+</tr>
+<tr>
+<td>NAT incorrecto</td>
+<td>Traducción errónea</td>
+</tr>
+</tbody></table>
+<h3>Validación Básica Syslog</h3>
+<h4>Capturar todo el tráfico Syslog</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -i any port 514
+</code></pre><h4>Validar una IP específica</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -i any udp port 514 and host 172.29.16.160
+</code></pre><h4>Mostrar payload legible</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -i any udp port 514 -A
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-text">&lt;134&gt;May 28 12:00:00 router01 Interface GigabitEthernet0/1 changed state to up
+</code></pre><h4>Explicación del parámetro -A</h4>
+<pre><code class="hljs language-bash">-A
+</code></pre><p>Muestra el contenido del paquete en formato ASCII legible.</p>
+<p>Muy útil para validar:</p>
+<ul>
+<li>formato Syslog</li>
+<li>contenido del mensaje</li>
+<li>hostname</li>
+<li>facility</li>
+<li>severity</li>
+</ul>
+<h3>Capturar cantidad limitada de paquetes</h3>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -i any udp port 514 -c 10
+</code></pre><h4>Explicación</h4>
+<pre><code class="hljs language-bash">-c 10
+</code></pre><p>Captura únicamente:</p>
+<pre><code class="hljs language-text">10 paquetes
+</code></pre><h4>Guardar captura en archivo PCAP</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -i any udp port 514 -w captura_syslog.pcap
+</code></pre><h4>Uso del archivo PCAP</h4>
+<p>El archivo puede abrirse con:</p>
+<ul>
+<li>Wireshark</li>
+<li>tcpdump</li>
+<li>tshark</li>
+</ul>
+<h3>Validación Profesional Recomendada</h3>
+<h4>Paso 1 — Validar llegada de paquetes</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -nn -i any udp port 514
+</code></pre><h4>Explicación del parámetro -nn</h4>
+<pre><code class="hljs language-bash">-nn
+</code></pre><p>Evita resolución DNS y nombres de servicios.</p>
+<p>Mejora rendimiento y claridad.</p>
+<h4>Paso 2 — Validar puerto abierto</h4>
+<pre><code class="hljs language-bash">ss -tulpn | grep 514
+</code></pre><h4>Resultado esperado</h4>
+<pre><code class="hljs language-bash">udp   UNCONN   0   0   0.0.0.0:514
+</code></pre><h4>Paso 3 — Validar servicio Logstash</h4>
+<pre><code class="hljs language-bash">systemctl status logstash
+</code></pre><h4>Paso 4 — Revisar logs de Logstash</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">tail</span> -f /var/log/logstash/logstash-plain.log
+</code></pre><h3>Validación Avanzada</h3>
+<h4>Mostrar timestamps detallados</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -tttt -i any udp port 514
+</code></pre><hr>
+<h4>Validar únicamente tráfico de un dispositivo</h4>
+<pre><code class="hljs language-bash"><span class="hljs-built_in">sudo</span> tcpdump -nn -i any udp port 514 and host 172.29.16.160
+</code></pre><h3>Casos de Uso Comunes</h3>
+<table>
+<thead>
+<tr>
+<th>Caso</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Troubleshooting Syslog</td>
+<td>Validar llegada</td>
+</tr>
+<tr>
+<td>Firewall</td>
+<td>Confirmar apertura</td>
+</tr>
+<tr>
+<td>Network Team</td>
+<td>Validación routing</td>
+</tr>
+<tr>
+<td>Seguridad</td>
+<td>Verificar eventos</td>
+</tr>
+<tr>
+<td>Integraciones</td>
+<td>Confirmar envío</td>
+</tr>
+</tbody></table>
+<h3>Importante sobre UDP</h3>
+<p>Syslog UDP:</p>
+<ul>
+<li>NO garantiza entrega</li>
+<li>NO confirma recepción</li>
+<li>puede perder paquetes</li>
+</ul>
+<p>Por esta razón en ambientes críticos se recomienda:</p>
+<table>
+<thead>
+<tr>
+<th>Protocolo</th>
+<th>Puerto</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Syslog TCP</td>
+<td>514</td>
+</tr>
+<tr>
+<td>Syslog TLS</td>
+<td>6514</td>
+</tr>
+</tbody></table>
+<h3>Buenas Prácticas</h3>
+<h4>Producción</h4>
+<p>Utilizar:</p>
+<pre><code class="hljs language-bash">tcpdump -nn
+</code></pre><p>para evitar resolución DNS innecesaria.</p>
+<h3>Recomendaciones</h3>
+<ul>
+<li>Validar tráfico antes de revisar Logstash</li>
+<li>Confirmar puerto correcto</li>
+<li>Confirmar protocolo UDP/TCP</li>
+<li>Validar firewall del servidor</li>
+<li>Validar SELinux/AppArmor</li>
+</ul>
+<h3>Errores Comunes</h3>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Posible causa</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No aparecen paquetes</td>
+<td>Firewall o routing</td>
+</tr>
+<tr>
+<td>Puerto incorrecto</td>
+<td>Syslog mal configurado</td>
+</tr>
+<tr>
+<td>Permission denied</td>
+<td>No usar sudo</td>
+</tr>
+<tr>
+<td>Tráfico TCP</td>
+<td>Se está filtrando UDP</td>
+</tr>
+</tbody></table>
+<h3>Conclusión</h3>
+<p>La herramienta <code>tcpdump</code> es fundamental para troubleshooting de integraciones Syslog en Logstash, ya que permite confirmar si los eventos realmente están llegando al servidor antes de analizar configuraciones de pipelines o Elasticsearch.</p>
+<h2>Implementación de Alta Disponibilidad para Envío de Logs hacia Logstash mediante Rsyslog</h2>
+<h3>Objetivo</h3>
+<p>Implementar un mecanismo de alta disponibilidad para el envío de eventos Syslog desde los servidores origen hacia la plataforma Elastic, utilizando dos instancias de Logstash configuradas en esquema Activo/Pasivo (Primary/Secondary).</p>
+<p>La solución busca garantizar la continuidad en la transmisión de logs ante la indisponibilidad de una de las instancias Logstash, permitiendo que los eventos sean redirigidos automáticamente hacia un nodo secundario sin necesidad de intervención manual.</p>
+<h3>Arquitectura Implementada</h3>
+<h4>Arquitectura de Alta Disponibilidad Logstash</h4>
+<p>El servidor origen utiliza rsyslog para el envío de eventos Syslog mediante TCP hacia la instancia principal de Logstash (<code>logstash01</code>).</p>
+<p>Durante la operación normal, todos los eventos son transmitidos exclusivamente al nodo principal
+(<code>logstash01</code>).</p>
+<p>Si rsyslog detecta que la conexión hacia <code>logstash01</code> se encuentra suspendida o no disponible, activa automáticamente el mecanismo de failover configurado mediante <code>ActionExecOnlyWhenPreviousIsSuspended</code>, redirigiendo el tráfico hacia la instancia secundaria
+(<code>logstash02</code>).</p>
+<p>Este mecanismo permite mantener la continuidad en la recolección de logs sin intervención manual, garantizando que los eventos continúen siendo enviados a la plataforma Elastic mientras al menos una de las instancias Logstash permanezca disponible.</p>
+<p>La solución implementa un esquema Activo-Pasivo, donde <code>logstash01</code> opera como nodo principal y <code>logstash02</code> actúa como nodo de contingencia, entrando en operación únicamente cuando el servicio principal no está disponible.</p>
+<h3>Configuración Implementada</h3>
+<p>Archivo de configuración rsyslog:</p>
+<pre><code class="hljs language-conf"># Directorio de trabajo de rsyslog
+$WorkDirectory /var/lib/rsyslog
+
+# Intervalo de reintento cuando una acción queda suspendida
+$ActionResumeInterval 10
+
+# Envío principal hacia Logstash 01
+*.* @@logstash01.midominio.local:5514
+
+# Activar failover únicamente si la acción anterior se suspende
+$ActionExecOnlyWhenPreviousIsSuspended on
+
+# Destino secundario
+&amp; @@logstash02.midominio.local:5514
+
+# Almacenamiento local en caso de indisponibilidad de ambos destinos
+&amp; /var/log/rsyslog-logstash-failover-buffer.log
+
+# Restaurar comportamiento normal
+$ActionExecOnlyWhenPreviousIsSuspended off
+</code></pre><h3>Descripción de los Parámetros</h3>
+<h4>WorkDirectory</h4>
+<pre><code class="hljs language-conf">$WorkDirectory /var/lib/rsyslog
+</code></pre><p>Define el directorio de trabajo utilizado internamente por rsyslog para el manejo de colas y archivos temporales.</p>
+<h4>ActionResumeInterval</h4>
+<pre><code class="hljs language-conf">$ActionResumeInterval 10
+</code></pre><p>Indica el tiempo en segundos que rsyslog esperará antes de intentar nuevamente una acción que haya sido suspendida por problemas de conectividad.</p>
+<p>En este caso se configuró un intervalo de 10 segundos.</p>
+<h4>Destino Principal</h4>
+<pre><code class="hljs language-conf">*.* @@logstash01.midominio.local:5514
+</code></pre><p>Envía todos los eventos generados por el sistema hacia la instancia principal de Logstash utilizando protocolo TCP.</p>
+<p>El uso de doble arroba (@@) indica comunicación TCP, proporcionando mayor confiabilidad frente a UDP.</p>
+<h4>Activación de Failover</h4>
+<pre><code class="hljs language-conf">$ActionExecOnlyWhenPreviousIsSuspended on
+</code></pre><p>Habilita la ejecución de la siguiente acción únicamente cuando la acción anterior se encuentre suspendida.</p>
+<p>Esto permite construir una cadena de contingencia entre múltiples destinos.</p>
+<h4>Destino Secundario</h4>
+<pre><code class="hljs language-conf">&amp; @@logstash02.midominio.local:5514
+</code></pre><p>Define el segundo servidor Logstash que recibirá los eventos únicamente cuando el servidor principal no se encuentre disponible.</p>
+<h4>Buffer Local de Contingencia</h4>
+<pre><code class="hljs language-conf">&amp; /var/log/rsyslog-logstash-failover-buffer.log
+</code></pre><p>Si ambas instancias Logstash presentan indisponibilidad, los eventos serán almacenados temporalmente en un archivo local.</p>
+<p>Este mecanismo permite conservar evidencia de los eventos generados durante una contingencia total de la plataforma de recepción.</p>
+<h4>Restauración del Comportamiento Normal</h4>
+<pre><code class="hljs language-conf">$ActionExecOnlyWhenPreviousIsSuspended off
+</code></pre><p>Deshabilita la lógica de failover para las configuraciones posteriores dentro del archivo de rsyslog.</p>
+<h3>Flujo de Operación</h3>
+<h4>Escenario 1: Operación Normal</h4>
+<ul>
+<li>El servidor genera eventos Syslog.</li>
+<li>rsyslog envía los eventos a Logstash01.</li>
+<li>Logstash01 procesa y entrega la información hacia Elasticsearch.</li>
+<li>No se utiliza el nodo secundario.</li>
+</ul>
+<h4>Escenario 2: Falla de Logstash01</h4>
+<ul>
+<li>rsyslog detecta que la conexión con Logstash01 se encuentra suspendida.</li>
+<li>Se activa automáticamente la política de failover.</li>
+<li>Los eventos son enviados a Logstash02.</li>
+<li>La recolección de logs continúa sin intervención manual.</li>
+</ul>
+<h4>Escenario 3: Falla de Ambos Logstash</h4>
+<ul>
+<li>rsyslog no puede entregar eventos ni a Logstash01 ni a Logstash02.</li>
+<li>Los eventos son almacenados en el archivo local:</li>
+</ul>
+<pre><code class="hljs language-bash">/var/log/rsyslog-logstash-failover-buffer.log
+</code></pre><ul>
+<li>Los registros permanecen disponibles para análisis o recuperación posterior.</li>
+</ul>
+<h3>Beneficios de la Solución</h3>
+<ul>
+<li>Alta disponibilidad en la recepción de eventos Syslog.</li>
+<li>Redundancia de infraestructura Logstash.</li>
+<li>Conmutación automática ante fallos del nodo principal.</li>
+<li>Reducción del riesgo de pérdida de información.</li>
+<li>Implementación sencilla y sin necesidad de balanceadores externos.</li>
+<li>Fácil administración y mantenimiento.</li>
+</ul>
+<h3>Resultado Esperado</h3>
+<p>La plataforma de monitoreo mantiene la recepción de eventos aun cuando una de las instancias Logstash se encuentre fuera de servicio, garantizando continuidad operativa y mejorando la disponibilidad general de la arquitectura de recolección de logs.</p>
+</article>
+
+        <footer>ElasticDocs Builder v1.0</footer>
+      </main>
+    </div>
+
+    <script src="js/toc.js"></script>
+  </body>
+</html>

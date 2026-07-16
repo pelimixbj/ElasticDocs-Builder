@@ -1,0 +1,11 @@
+{
+  "title": "Elastic Platform",
+  "subtitle": "Documentación Técnica",
+  "client": "SERMAS",
+  "company": "Inetum",
+  "author": "Miguel Martínez",
+  "version": "1.0",
+  "theme": "elastic",
+  "language": "es",
+  "logo": "assets/logo.png"
+}

@@ -1,0 +1,35 @@
+.elastic-table-card table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  margin: 0;
+}
+
+.elastic-table-card thead {
+  background: #f7fafc;
+}
+
+.elastic-table-card th {
+  text-align: left;
+
+  padding: 14px 18px;
+
+  font-weight: 600;
+
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.elastic-table-card td {
+  padding: 12px 18px;
+
+  border-bottom: 1px solid #ececec;
+}
+
+.elastic-table-card tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.elastic-table-card tbody tr:hover {
+  background: #f1f9fa;
+}
