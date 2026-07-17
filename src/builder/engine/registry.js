@@ -12,6 +12,8 @@ const ServerComponent = require("../components/server");
 const TopologyComponent = require("../components/topology");
 const ArchitectureComponent = require("../components/architecture");
 const CoverComponent = require("../components/cover");
+const InfrastructureComponent = require("../components/infrastructure");
+const NodeGroupComponent = require("../components/nodeGroup");
 
 module.exports = {
   warning: WarningComponent,
@@ -27,4 +29,6 @@ module.exports = {
   component: ElasticComponent,
   table: TableComponent,
   cover: CoverComponent,
+  infrastructure: InfrastructureComponent,
+  nodegroup: NodeGroupComponent,
 };

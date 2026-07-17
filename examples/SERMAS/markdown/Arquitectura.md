@@ -3,7 +3,7 @@ client=SERMAS
 subtitle=Documentación final de arquitectura
 company=Inetum
 status=Proyecto finalizado
-date=Junio 2026
+date=Agosto 2026
 version=1.0
 :::
 
@@ -57,49 +57,7 @@ type=kibana
 
 ## Cluster
 
-:::cluster
-title=Cluster Elastic SERMAS
-master=3
-hot=2
-cold=3
-frozen=1
-ml=2
-kibana=2
-fleet=2
-logstash=1
-:::
-
-## elasticsearch.yml
-
-```yaml
-cluster.name: sermas
-node.name: elastic-master01
-network.host: 172.29.80.87
-xpack.security.enabled: true
-```
-
-## Logstash
-
-```ruby
-input {
-
-  udp {
-
-    port => 514
-
-  }
-
-}
-```
-
-## API
-
-```json
-{
-  "cluster_name": "sermas",
-  "status": "green"
-}
-```
+![Arquitectura General de Logstash](images/Cluster.png)
 
 ## Versiones
 
@@ -111,36 +69,186 @@ fleet=8.11.0
 agent=8.11.0
 :::
 
-## Nodo Maestro
+## Nodos
 
 :::node
-hostname=elastic-master01
+hostname=master-01
 role=Master
-ip=10.10.10.10
+ip=172.29.80.87
 ram=8 GB
 cpu=4 vCPU
 disk=100 GB
 os=RHEL 9
 :::
 
-## Servidor
-
-:::server
-hostname=srv-elastic01
-environment=Producción
+:::node
+hostname=master-02
+role=Master
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=100 GB
 os=RHEL 9
-cpu=8 vCPU
-ram=32 GB
-storage=500 GB
-ip=10.10.10.20
 :::
 
-## Topología
+:::node
+hostname=master-03
+role=Master
+ip=172.29.80.95
+ram=8 GB
+cpu=4 vCPU
+disk=100 GB
+os=RHEL 9
+:::
 
-:::topology
-environment=Producción
-sites=2
-nodes=16
+:::node
+hostname=hot-01
+role=Hot
+ip=172.29.80.96
+ram=16 GB
+cpu=8 vCPU
+disk=500 GB
+os=RHEL 9
+:::
+
+:::node
+hostname=hot-02
+role=Hot
+ip=172.29.80.97
+ram=16 GB
+cpu=8 vCPU
+disk=500 GB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-01
+role=Cold
+ip=172.29.80.107
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-02
+role=Cold
+ip=172.29.80.108
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Cold
+ip=172.29.80.109
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Frozen
+ip=172.29.80.110
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Kibana
+ip=172.29.80.90
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Kibana
+ip=172.29.80.89
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Logstash
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Logstash
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Logstash
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Fleet
+ip=172.29.80.91
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=Fleet
+ip=172.29.80.92
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=ML
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
+role=ML
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
 :::
 
 # LOGSTASH
@@ -173,7 +281,7 @@ En este caso se implementa una arquitectura de pipelines distribuidos utilizando
 :::architecture
 title=Arquitectura Logstash
 environment=Producción
-nodes=1
+nodes=3
 security=Habilitada
 monitoring=Habilitado
 :::
@@ -2059,3 +2167,35 @@ Deshabilita la lógica de failover para las configuraciones posteriores dentro d
 ### Resultado Esperado
 
 La plataforma de monitoreo mantiene la recepción de eventos aun cuando una de las instancias Logstash se encuentre fuera de servicio, garantizando continuidad operativa y mejorando la disponibilidad general de la arquitectura de recolección de logs.
+
+## elasticsearch.yml
+
+```yaml
+cluster.name: sermas
+node.name: elastic-master01
+network.host: 172.29.80.87
+xpack.security.enabled: true
+```
+
+## Logstash
+
+```ruby
+input {
+
+  udp {
+
+    port => 514
+
+  }
+
+}
+```
+
+## API
+
+```json
+{
+  "cluster_name": "sermas",
+  "status": "green"
+}
+```

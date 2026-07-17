@@ -8,6 +8,8 @@ const config = require("../config");
 const { parseComponents } = require("../engine/parser");
 const { renderComponent } = require("../engine/renderer");
 
+const NodeGroupComponent = require("../components/nodeGroup");
+
 // Configurar Marked una sola vez
 marked.use(
   markedHighlight({
@@ -77,30 +79,102 @@ function buildSidebar(toc) {
 }
 
 function generateHTML() {
+  // ==========================================
   // Leer archivos
+  // ==========================================
+
   let markdown = fs.readFileSync(config.markdownFile, "utf8");
+
   let template = fs.readFileSync(config.templateFile, "utf8");
+
   const { toc, anchors } = generateTOC(markdown);
+
   const sidebar = buildSidebar(toc);
 
+  // ==========================================
   // Buscar componentes
+  // ==========================================
+
   const components = parseComponents(markdown);
 
-  // Reemplazar componentes
-  for (const component of components) {
+  const nodeComponents = components.filter(
+    (component) => component.type === "node",
+  );
+
+  const otherComponents = components.filter(
+    (component) => component.type !== "node",
+  );
+
+  // ==========================================
+  // Renderizar todos los componentes excepto Node
+  // ==========================================
+
+  for (const component of otherComponents) {
     const html = renderComponent(component);
+
     markdown = markdown.replace(component.raw, html);
   }
+
+  // ==========================================
+  // Agrupar automáticamente los Nodes
+  // ==========================================
+
+  if (nodeComponents.length) {
+    const groups = {};
+
+    nodeComponents.forEach((node) => {
+      const role = node.props.role;
+
+      if (!groups[role]) {
+        groups[role] = [];
+      }
+
+      groups[role].push(node.props);
+    });
+
+    let groupedHtml = "";
+
+    Object.entries(groups).forEach(([role, nodes]) => {
+      groupedHtml += new NodeGroupComponent({
+        role,
+        nodes,
+      }).render();
+    });
+
+    // eliminar todos los nodos individuales
+    nodeComponents.forEach((node, index) => {
+      if (index === 0) {
+        markdown = markdown.replace(node.raw, groupedHtml);
+      } else {
+        markdown = markdown.replace(node.raw, "");
+      }
+    });
+  }
+
+  // ==========================================
+  // Agregar Anchors
+  // ==========================================
+
   for (const anchor of anchors) {
     markdown = markdown.replace(anchor.original, anchor.replacement);
   }
-  // Convertir Markdown a HTML
+
+  // ==========================================
+  // Markdown -> HTML
+  // ==========================================
+  //console.log(markdown);
   const htmlContent = marked.parse(markdown);
 
-  // Reemplazar variables del template
+  // ==========================================
+  // Template
+  // ==========================================
+
   template = template.replaceAll("{{TITLE}}", config.config.title);
+
   template = template.replaceAll("{{SUBTITLE}}", config.config.subtitle);
+
   template = template.replace("{{CONTENT}}", htmlContent);
+
   template = template.replace("{{SIDEBAR}}", sidebar);
 
   console.log("✔ HTML generado correctamente");

@@ -4,42 +4,99 @@ class NodeComponent extends Component {
   render() {
     const p = this.data.props;
 
+    const roles = {
+      master: {
+        icon: "🟢",
+        className: "master",
+        title: "MASTER",
+      },
+
+      hot: {
+        icon: "🟠",
+        className: "hot",
+        title: "HOT",
+      },
+
+      cold: {
+        icon: "🔵",
+        className: "cold",
+        title: "COLD",
+      },
+
+      frozen: {
+        icon: "🟣",
+        className: "frozen",
+        title: "FROZEN",
+      },
+
+      ml: {
+        icon: "🟡",
+        className: "ml",
+        title: "MACHINE LEARNING",
+      },
+
+      kibana: {
+        icon: "⚫",
+        className: "kibana",
+        title: "KIBANA",
+      },
+    };
+
+    const role = (p.role || "").toLowerCase();
+
+    const info = roles[role] || {
+      icon: "⚪",
+      className: "default",
+      title: p.role || "NODE",
+    };
+
     return `
-<div class="elastic-card elastic-node">
-<h3>${p.hostname}</h3>
+<div class="elastic-node-card ${info.className}">
 
-<table>
-<tr>
-<td>Role</td>
-<td>${p.role}</td>
-</tr>
+    <div class="node-header">
+        ${info.icon} ${info.title}
+    </div>
 
-<tr>
-<td>IP</td>
-<td>${p.ip}</td>
-</tr>
+    <div class="node-hostname">
+        ${p.hostname}
+    </div>
 
-<tr>
-<td>RAM</td>
-<td>${p.ram}</td>
-</tr>
+    <div class="node-info">
 
-<tr>
-<td>CPU</td>
-<td>${p.cpu}</td>
-</tr>
+        <div>
+            <span>🌐</span>
+            <strong>IP</strong>
+            <span>${p.ip}</span>
+        </div>
 
-<tr>
-<td>Disk</td>
-<td>${p.disk}</td>
-</tr>
+        <div>
+            <span>💾</span>
+            <strong>RAM</strong>
+            <span>${p.ram}</span>
+        </div>
 
-<tr>
-<td>OS</td>
-<td>${p.os}</td>
-</tr>
-</table>
-</div>`;
+        <div>
+            <span>⚙</span>
+            <strong>CPU</strong>
+            <span>${p.cpu}</span>
+        </div>
+
+        <div>
+            <span>🖴</span>
+            <strong>DISK</strong>
+            <span>${p.disk}</span>
+        </div>
+
+        <div>
+            <span>🖥</span>
+            <strong>OS</strong>
+            <span>${p.os}</span>
+        </div>
+
+    </div>
+
+</div>
+`;
   }
 }
 

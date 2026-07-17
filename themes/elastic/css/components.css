@@ -284,7 +284,8 @@ article hr {
 article img {
   display: block;
 
-  max-width: 50%;
+  max-width: min(900px, 80%);
+
   height: auto;
 
   margin: 25px auto;
@@ -294,6 +295,7 @@ article img {
   background: #ffffff;
 
   border: 1px solid #e5e7eb;
+
   border-radius: 12px;
 
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
@@ -302,13 +304,70 @@ article img {
 
   transition:
     transform 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
 article img:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px) scale(1.02);
 
-  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.15);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.18);
+
+  filter: brightness(1.02);
+}
+
+/* =====================================================
+   Elastic Image Lightbox
+===================================================== */
+
+.elastic-lightbox {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.85);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition: 0.25s;
+
+  z-index: 9999;
+
+  backdrop-filter: blur(4px);
+}
+
+.elastic-lightbox.open {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+.elastic-lightbox img {
+  max-width: 90vw;
+
+  max-height: 90vh;
+
+  border-radius: 10px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+
+  transform: scale(0.92);
+
+  transition: 0.25s;
+
+  cursor: zoom-out;
+}
+
+.elastic-lightbox.open img {
+  transform: scale(1);
 }
 
 /* -----------------------------------------------------
@@ -482,4 +541,163 @@ article ::selection {
   border: 1px solid #9fe0ca;
 
   font-weight: 700;
+}
+
+/* =====================================================
+   Node Groups
+===================================================== */
+
+.node-group {
+  margin: 35px 0 50px;
+}
+
+/* Cabecera del grupo */
+
+.node-group-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 14px 20px;
+
+  background: #005571;
+
+  color: white;
+
+  border-radius: 10px 10px 0 0;
+}
+
+.node-group-header h3 {
+  margin: 0;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  color: white;
+
+  letter-spacing: 0.5px;
+}
+
+.node-count {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  opacity: 0.9;
+}
+
+/* Grid de tarjetas */
+
+.node-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+  gap: 12px;
+
+  padding: 22px;
+
+  border: 1px solid #dbe5ea;
+
+  border-top: none;
+
+  border-radius: 0 0 12px 12px;
+
+  background: #f8fafc;
+}
+
+/* Tarjeta 
+.node-card {
+  margin: 0;
+  height: 100%;
+}*/
+.node-card {
+  background: white;
+
+  border-radius: 8px;
+
+  border: 1px solid #e5e7eb;
+
+  padding: 14px;
+}
+
+/* Hostname */
+
+.node-card-title {
+  font-size: 18px;
+
+  font-weight: 700;
+
+  margin-bottom: 12px;
+
+  color: #0f172a;
+}
+
+/* Información */
+
+.node-card-body {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.node-card-body div {
+  display: grid;
+
+  grid-template-columns: 24px 55px auto;
+
+  gap: 10px;
+
+  align-items: center;
+
+  padding: 8px 0;
+
+  border-bottom: 1px solid #edf2f7;
+}
+
+.node-info div:last-child {
+  border-bottom: none;
+}
+
+.node-card-body strong {
+  font-size: 12px;
+
+  color: #64748b;
+}
+
+.node-card-body span:last-child {
+  font-size: 13px;
+
+  color: #111827;
+}
+
+.node-card-body p {
+  margin: 0;
+
+  font-size: 13px;
+
+  color: #111827;
+}
+
+.node-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  gap: 16px;
+
+  padding: 18px;
+
+  border: 1px solid #dbe5ea;
+
+  border-top: none;
+
+  border-radius: 0 0 12px 12px;
+
+  background: #f8fafc;
 }
