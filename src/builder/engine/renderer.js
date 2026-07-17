@@ -14,7 +14,7 @@ function renderComponent(component) {
 
   const html = instance.render();
 
-  console.log(html);
+  //console.log(html);
 
   return html;
 }

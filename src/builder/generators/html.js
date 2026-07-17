@@ -103,13 +103,9 @@ function generateHTML() {
   template = template.replace("{{CONTENT}}", htmlContent);
   template = template.replace("{{SIDEBAR}}", sidebar);
 
-  // Crear carpeta de salida
-  fs.ensureDirSync(config.outputDir);
-
-  // Guardar HTML
-  fs.writeFileSync(config.outputFile, template);
-
   console.log("✔ HTML generado correctamente");
+
+  return template;
 }
 
 module.exports = generateHTML;
