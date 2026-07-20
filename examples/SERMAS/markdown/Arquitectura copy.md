@@ -5,9 +5,10 @@ company=Inetum
 status=Proyecto finalizado
 date=Agosto 2026
 version=1.0
+:::
 
-author=Miguel Martínez
-position=Software Engineer | Elastic Stack & Observability
+:::success
+Texto...
 :::
 
 # Arquitectura de la Plataforma Elastic
@@ -65,17 +66,17 @@ type=kibana
 ## Versiones
 
 :::version
-elasticsearch=8.11.0
-kibana=8.11.0
-logstash=8.19.5
-fleet=8.11.0
-agent=8.11.0
+elasticsearch=9.3.1
+kibana=9.3.1
+logstash=9.3.1
+fleet=9.3.1
+agent=9.3.1
 :::
 
 ## Nodos
 
 :::node
-hostname=xclproapp0641vx
+hostname=master-01
 role=Master
 ip=172.29.80.87
 ram=8 GB
@@ -85,7 +86,7 @@ os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0637vx
+hostname=master-02
 role=Master
 ip=172.29.80.94
 ram=8 GB
@@ -95,7 +96,7 @@ os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0638vx
+hostname=master-03
 role=Master
 ip=172.29.80.95
 ram=8 GB
@@ -105,152 +106,152 @@ os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0639vx
+hostname=hot-01
 role=Hot
 ip=172.29.80.96
-ram=64 GB
-cpu=32 vCPU
-disk=2,5 TB
+ram=16 GB
+cpu=8 vCPU
+disk=500 GB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0640vx
+hostname=hot-02
 role=Hot
 ip=172.29.80.97
-ram=64 GB
-cpu=32 vCPU
-disk=2,5 TB
+ram=16 GB
+cpu=8 vCPU
+disk=500 GB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0662vx
+hostname=cold-01
 role=Cold
 ip=172.29.80.107
-ram=64 GB
-cpu=16 vCPU
-disk=10 TB
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0663vx
+hostname=cold-02
 role=Cold
 ip=172.29.80.108
-ram=64 GB
-cpu=16 vCPU
-disk=10 TB
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0664vx
+hostname=cold-03
 role=Cold
 ip=172.29.80.109
-ram=64 GB
-cpu=16 vCPU
-disk=10 TB
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0665vx
+hostname=cold-03
 role=Frozen
 ip=172.29.80.110
 ram=8 GB
-cpu=8 vCPU
-disk=600GB + 6TB repositorio
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=clproapp0633vx
+hostname=cold-03
 role=Kibana
 ip=172.29.80.90
-ram=12 GB
-cpu=8 vCPU
-disk=0 TB
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=clproapp0632vx
+hostname=cold-03
 role=Kibana
 ip=172.29.80.89
-ram=12 GB
-cpu=8 vCPU
-disk=0 TB
-os=RHEL 9
-:::
-
-:::node
-hostname=clproapp0676vx
-role=Logstash
-ip=172.29.80.99
-ram=16 GB
-cpu=8 vCPU
+ram=8 GB
+cpu=4 vCPU
 disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=clproapp0720vx
+hostname=cold-03
 role=Logstash
-ip=172.29.80.122
-ram=16 GB
-cpu=8 vCPU
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
 disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=clproapp0721vx
+hostname=cold-03
 role=Logstash
-ip=172.29.80.123
-ram=16 GB
-cpu=8 vCPU
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
 disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=clproapp0634vx
+hostname=cold-03
+role=Logstash
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
+os=RHEL 9
+:::
+
+:::node
+hostname=cold-03
 role=Fleet
 ip=172.29.80.91
 ram=8 GB
 cpu=4 vCPU
-disk=0 TB
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=clproapp0635vx
+hostname=cold-03
 role=Fleet
 ip=172.29.80.92
 ram=8 GB
 cpu=4 vCPU
-disk=0 TB
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0660vx
+hostname=cold-03
 role=ML
-ip=172.29.80.105
-ram=32 GB
-cpu=16 vCPU
-disk=0 TB
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
 :::node
-hostname=xclproapp0661vx
+hostname=cold-03
 role=ML
-ip=172.29.80.106
-ram=32 GB
-cpu=16 vCPU
-disk=0 TB
+ip=172.29.80.94
+ram=8 GB
+cpu=4 vCPU
+disk=2 TB
 os=RHEL 9
 :::
 
@@ -275,9 +276,7 @@ En este caso se implementa una arquitectura de pipelines distribuidos utilizando
 - Procesamiento independiente
 - Integraciones multi-tecnología
 
-:::info
-Esta arquitectura permite escalar cada tecnología de forma independiente.
-:::
+> Esta arquitectura permite escalar cada tecnología de forma independiente.
 
 **Importante:** Todos los pipelines deben validar correctamente antes de pasar a producción.
 
@@ -289,6 +288,18 @@ environment=Producción
 nodes=3
 security=Habilitada
 monitoring=Habilitado
+:::
+
+## Servidor
+
+:::server
+hostname=logstash01
+environment=Producción
+os=RHEL 9
+cpu=8 vCPU
+ram=16 GB
+storage=500 GB
+ip=172.29.xx.xx
 :::
 
 ## Instalación de Logstash RPM

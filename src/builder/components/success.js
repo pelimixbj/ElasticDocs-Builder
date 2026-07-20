@@ -7,7 +7,7 @@ class SuccessComponent extends Component {
 
 <div class="callout-title">
 
-✔ Correcto
+✅ Success
 
 </div>
 

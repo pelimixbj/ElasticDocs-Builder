@@ -19,6 +19,28 @@ ENTREGABLE FINAL DE PROYECTO
 ${p.subtitle || ""}
 </p>
 
+<div class="cover-author">
+
+<div class="cover-author-title">
+Elaborado por
+</div>
+
+<div class="cover-author-name">
+${p.author || "No especificado"}
+</div>
+
+${
+  p.position
+    ? `
+<div class="cover-author-position">
+${p.position}
+</div>
+`
+    : ""
+}
+
+</div>
+
 </div>
 
 <div class="elastic-cover-right">
@@ -37,9 +59,7 @@ ${p.subtitle || ""}
 
 <tr>
 <th>ESTADO</th>
-<td>
-<span class="cover-status">${p.status || ""}</span>
-</td>
+<td><span class="cover-status">${p.status || ""}</span></td>
 </tr>
 
 <tr>

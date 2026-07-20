@@ -9,6 +9,7 @@ const { parseComponents } = require("../engine/parser");
 const { renderComponent } = require("../engine/renderer");
 
 const NodeGroupComponent = require("../components/nodeGroup");
+const parseCallouts = require("../../utils/parseCallouts");
 
 // Configurar Marked una sola vez
 marked.use(
@@ -84,6 +85,8 @@ function generateHTML() {
   // ==========================================
 
   let markdown = fs.readFileSync(config.markdownFile, "utf8");
+
+  markdown = parseCallouts(markdown);
 
   let template = fs.readFileSync(config.templateFile, "utf8");
 

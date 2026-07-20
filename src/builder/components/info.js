@@ -7,7 +7,7 @@ class InfoComponent extends Component {
 
 <div class="callout-title">
 
-ℹ Información
+ℹ️ Info
 
 </div>
 

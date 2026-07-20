@@ -1023,6 +1023,136 @@ article ::selection {
   background: #f8fafc;
 }
 
+/*====================================================
+  Callouts (Obsidian Style)
+====================================================*/
+
+.callout {
+  margin: 20px 0;
+
+  padding: 16px 18px;
+
+  border-radius: 10px;
+
+  border-left: 5px solid;
+
+  background: #fafafa;
+}
+
+.callout-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+}
+
+.callout-body {
+  color: #374151;
+
+  line-height: 1.7;
+}
+
+.callout-body p {
+  margin: 0;
+}
+
+/* INFO */
+
+.callout.info {
+  background: #eef7ff;
+
+  border-color: #2196f3;
+}
+
+.callout.info .callout-title {
+  color: #1565c0;
+}
+
+/* SUCCESS */
+
+.callout.success {
+  background: #eefbf3;
+
+  border-color: #07f05d;
+}
+
+.callout.success .callout-title {
+  color: #199647;
+}
+
+/* WARNING */
+
+.callout.warning {
+  background: #fff8eb;
+
+  border-color: #d2f50b;
+}
+
+.callout.warning .callout-title {
+  color: #b45309;
+}
+
+/* DANGER */
+
+.callout.danger {
+  background: #fef2f2;
+
+  border-color: #ef4444;
+}
+
+.callout.danger .callout-title {
+  color: #b91c1c;
+}
+
+/* ==========================================
+   Autor
+========================================== */
+
+.cover-author {
+  margin-top: 45px;
+
+  padding-left: 18px;
+
+  border-left: 4px solid #00bfb3;
+}
+
+.cover-author-title {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+
+  font-weight: 700;
+}
+
+.cover-author-name {
+  margin-top: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.cover-author-position {
+  margin-top: 6px;
+
+  color: #475569;
+
+  font-size: 10px;
+}
+
 /* ============================================================
    ElasticDocs Builder
    Code Theme
@@ -1396,7 +1526,13 @@ code {
 ENTREGABLE FINAL DE PROYECTO
 </div><h1>SERMAS</h1><p class="cover-description">
 Documentación final de arquitectura
-</p></div><div class="elastic-cover-right"><table><tr>
+</p><div class="cover-author"><div class="cover-author-title">
+Elaborado por
+</div><div class="cover-author-name">
+Miguel Martínez
+</div><div class="cover-author-position">
+Software Engineer | Elastic Stack & Observability
+</div></div></div><div class="elastic-cover-right"><table><tr>
 <th>CLIENTE</th>
 <td>SERMAS</td>
 </tr><tr>
@@ -1404,9 +1540,7 @@ Documentación final de arquitectura
 <td>Inetum</td>
 </tr><tr>
 <th>ESTADO</th>
-<td>
-<span class="cover-status">Proyecto finalizado</span>
-</td>
+<td><span class="cover-status">Proyecto finalizado</span></td>
 </tr><tr>
 <th>FECHA</th>
 <td>Agosto 2026</td>
@@ -1516,7 +1650,7 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">3</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 master-01</div>
+<div class="node-card-title">🖥 xclproapp0641vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.87</p></div>
 <div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
@@ -1526,7 +1660,7 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 master-02</div>
+<div class="node-card-title">🖥 xclproapp0637vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.94</p></div>
 <div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
@@ -1536,7 +1670,7 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 master-03</div>
+<div class="node-card-title">🖥 xclproapp0638vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.95</p></div>
 <div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
@@ -1552,22 +1686,22 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">2</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 hot-01</div>
+<div class="node-card-title">🖥 xclproapp0639vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.96</p></div>
-<div><span>💾</span><strong>RAM</strong><p>16 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>500 GB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>64 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>32 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>2,5 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 hot-02</div>
+<div class="node-card-title">🖥 xclproapp0640vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.97</p></div>
-<div><span>💾</span><strong>RAM</strong><p>16 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>500 GB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>64 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>32 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>2,5 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
@@ -1578,32 +1712,32 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">3</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 cold-01</div>
+<div class="node-card-title">🖥 xclproapp0662vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.107</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>64 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>16 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>10 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-02</div>
+<div class="node-card-title">🖥 xclproapp0663vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.108</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>64 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>16 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>10 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 xclproapp0664vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.109</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>64 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>16 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>10 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
@@ -1614,12 +1748,12 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">1</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 xclproapp0665vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.110</p></div>
 <div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>600GB + 6TB repositorio</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
@@ -1630,22 +1764,22 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">2</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0633vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.90</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>12 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>0 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0632vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.89</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>💾</span><strong>RAM</strong><p>12 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>0 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
@@ -1656,31 +1790,31 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">3</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0676vx</div>
 <div class="node-card-body">
-<div><span>🌐</span><strong>IP</strong><p>172.29.80.94</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
+<div><span>🌐</span><strong>IP</strong><p>172.29.80.99</p></div>
+<div><span>💾</span><strong>RAM</strong><p>16 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
 <div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0720vx</div>
 <div class="node-card-body">
-<div><span>🌐</span><strong>IP</strong><p>172.29.80.94</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
+<div><span>🌐</span><strong>IP</strong><p>172.29.80.122</p></div>
+<div><span>💾</span><strong>RAM</strong><p>16 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
 <div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0721vx</div>
 <div class="node-card-body">
-<div><span>🌐</span><strong>IP</strong><p>172.29.80.94</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
+<div><span>🌐</span><strong>IP</strong><p>172.29.80.123</p></div>
+<div><span>💾</span><strong>RAM</strong><p>16 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>8 vCPU</p></div>
 <div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
@@ -1692,22 +1826,22 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">2</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0634vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.91</p></div>
 <div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
 <div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>0 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 clproapp0635vx</div>
 <div class="node-card-body">
 <div><span>🌐</span><strong>IP</strong><p>172.29.80.92</p></div>
 <div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
 <div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>0 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
@@ -1718,22 +1852,22 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <span class="node-count">2</span>
 </div>
 <div class="node-grid"><div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 xclproapp0660vx</div>
 <div class="node-card-body">
-<div><span>🌐</span><strong>IP</strong><p>172.29.80.94</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>🌐</span><strong>IP</strong><p>172.29.80.105</p></div>
+<div><span>💾</span><strong>RAM</strong><p>32 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>16 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>0 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
 <div class="node-card">
-<div class="node-card-title">🖥 cold-03</div>
+<div class="node-card-title">🖥 xclproapp0661vx</div>
 <div class="node-card-body">
-<div><span>🌐</span><strong>IP</strong><p>172.29.80.94</p></div>
-<div><span>💾</span><strong>RAM</strong><p>8 GB</p></div>
-<div><span>⚙</span><strong>CPU</strong><p>4 vCPU</p></div>
-<div><span>🗄</span><strong>Disk</strong><p>2 TB</p></div>
+<div><span>🌐</span><strong>IP</strong><p>172.29.80.106</p></div>
+<div><span>💾</span><strong>RAM</strong><p>32 GB</p></div>
+<div><span>⚙</span><strong>CPU</strong><p>16 vCPU</p></div>
+<div><span>🗄</span><strong>Disk</strong><p>0 TB</p></div>
 <div><span>🐧</span><strong>OS</strong><p>RHEL 9</p></div>
 </div>
 </div>
@@ -1753,11 +1887,9 @@ Kibana constituye la capa de visualización y administración de la plataforma E
 <li>Procesamiento independiente</li>
 <li>Integraciones multi-tecnología</li>
 </ul>
-<blockquote>
-<p>[!SUCCESS]
-Esta arquitectura permite escalar cada tecnología de forma independiente.</p>
-</blockquote>
-<p><strong>Importante:</strong> Todos los pipelines deben validar correctamente antes de pasar a producción.</p>
+<div class="callout info"><div class="callout-title"><p>ℹ️ Info</p>
+</div><div class="callout-body"><p>Esta arquitectura permite escalar cada tecnología de forma independiente.</p>
+</div></div><p><strong>Importante:</strong> Todos los pipelines deben validar correctamente antes de pasar a producción.</p>
 <h2>Arquitectura</h2>
 <div class="elastic-card"><h2>Arquitectura Logstash</h2><table><tr>
 <td>Environment</td>
@@ -1771,25 +1903,6 @@ Esta arquitectura permite escalar cada tecnología de forma independiente.</p>
 </tr><tr>
 <td>Nodes</td>
 <td>3</td>
-</tr></table></div><h2>Servidor</h2>
-<div class="elastic-card elastic-server"><h3>logstash01</h3><table><tr>
-<td>Environment</td>
-<td>Producción</td>
-</tr><tr>
-<td>Operating System</td>
-<td>RHEL 9</td>
-</tr><tr>
-<td>CPU</td>
-<td>8 vCPU</td>
-</tr><tr>
-<td>RAM</td>
-<td>16 GB</td>
-</tr><tr>
-<td>Storage</td>
-<td>500 GB</td>
-</tr><tr>
-<td>IP</td>
-<td>172.29.xx.xx</td>
 </tr></table></div><h2>Instalación de Logstash RPM</h2>
 <h3>Conexión SSH</h3>
 <pre><code class="hljs language-bash">ssh elastic@IP

@@ -701,3 +701,133 @@ article ::selection {
 
   background: #f8fafc;
 }
+
+/*====================================================
+  Callouts (Obsidian Style)
+====================================================*/
+
+.callout {
+  margin: 20px 0;
+
+  padding: 16px 18px;
+
+  border-radius: 10px;
+
+  border-left: 5px solid;
+
+  background: #fafafa;
+}
+
+.callout-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+}
+
+.callout-body {
+  color: #374151;
+
+  line-height: 1.7;
+}
+
+.callout-body p {
+  margin: 0;
+}
+
+/* INFO */
+
+.callout.info {
+  background: #eef7ff;
+
+  border-color: #2196f3;
+}
+
+.callout.info .callout-title {
+  color: #1565c0;
+}
+
+/* SUCCESS */
+
+.callout.success {
+  background: #eefbf3;
+
+  border-color: #07f05d;
+}
+
+.callout.success .callout-title {
+  color: #199647;
+}
+
+/* WARNING */
+
+.callout.warning {
+  background: #fff8eb;
+
+  border-color: #d2f50b;
+}
+
+.callout.warning .callout-title {
+  color: #b45309;
+}
+
+/* DANGER */
+
+.callout.danger {
+  background: #fef2f2;
+
+  border-color: #ef4444;
+}
+
+.callout.danger .callout-title {
+  color: #b91c1c;
+}
+
+/* ==========================================
+   Autor
+========================================== */
+
+.cover-author {
+  margin-top: 45px;
+
+  padding-left: 18px;
+
+  border-left: 4px solid #00bfb3;
+}
+
+.cover-author-title {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+
+  font-weight: 700;
+}
+
+.cover-author-name {
+  margin-top: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.cover-author-position {
+  margin-top: 6px;
+
+  color: #475569;
+
+  font-size: 10px;
+}

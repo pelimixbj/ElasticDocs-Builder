@@ -7,7 +7,7 @@ class WarningComponent extends Component {
 
 <div class="callout-title">
 
-⚠ Advertencia
+⚠️ Warning
 
 </div>
 
